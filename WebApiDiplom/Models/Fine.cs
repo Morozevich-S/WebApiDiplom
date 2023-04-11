@@ -6,7 +6,7 @@
         public DateTime Date { get; set; }
         public string Description { get; set; }
         public int Amount { get; set; }
-        public int ContractId { get; set; }
-        public Contract Contract { get; set; }
+        public int RentalContractId { get; set; }
+        public RentalContract RentalContract { get; set; }
     }
 }

@@ -9,6 +9,6 @@
         public string Passport { get; set; }
         public string Phone { get; set; }
         public JobTitle JobTitle { get; set; }
-        public ICollection<Contract> Contracts { get; set; }
+        public ICollection<RentalContract> RentalContracts { get; set; }
     }
 }

@@ -16,7 +16,7 @@
         /// </summary>
         public int Fines { get; set; }
         public string Phone { get; set; }
-        public ICollection<Contract> Contracts { get; set; }
+        public ICollection<RentalContract> RentalContracts { get; set; }
         public ICollection<ClientBrandCar> ClientBrandCars { get; set; }
     }
 }

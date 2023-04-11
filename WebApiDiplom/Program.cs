@@ -14,8 +14,9 @@ namespace WebApiDiplom
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddTransient<Seed>();
-            builder.Services.AddScoped<IContractRepository, ContractRepository>();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddScoped<IRentalContractRepository, RentalContractRepository>();
+            builder.Services.AddScoped<ICarModelRepository, CarModelRepository>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -27,18 +28,7 @@ namespace WebApiDiplom
 
             var app = builder.Build();
 
-            if (args.Length == 1 && args[0].ToLower() == "seeddata")
-                SeedData(app);
-
-            void SeedData(IHost app)
-            {
-                var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
-                using (var scope = scopedFactory.CreateScope())
-                {
-                    var service = scope.ServiceProvider.GetService<Seed>();
-                    service.SeedDataContext(); 
-                }
-            }
+            app.Services.SeedDataContext();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

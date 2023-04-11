@@ -16,11 +16,11 @@ namespace WebApiDiplom.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<ClientBrandCar> ClientBrandCars { get; set; }
         public DbSet<Color> Colors { get; set; }
-        public DbSet<Contract> Contracts { get; set; }
+        public DbSet<RentalContract> RentalContracts { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Fine> Fines { get; set; }
         public DbSet<JobTitle> JobTitles { get; set; }
-        public DbSet<Model> Models { get; set; }
+        public DbSet<CarModel> CarModels { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

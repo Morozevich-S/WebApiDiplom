@@ -12,7 +12,7 @@ using WebApiDiplom.Data;
 namespace WebApiDiplom.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230407115900_Initial")]
+    [Migration("20230411194233_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -67,6 +67,9 @@ namespace WebApiDiplom.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CarModelId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ColorId")
                         .HasColumnType("int");
 
@@ -84,11 +87,47 @@ namespace WebApiDiplom.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CarModelId");
+
                     b.HasIndex("ColorId");
 
-                    b.HasIndex("ModelId");
-
                     b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("WebApiDiplom.Models.CarModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BodyTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BrandCarId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BodyTypeId");
+
+                    b.HasIndex("BrandCarId");
+
+                    b.ToTable("CarModels");
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Client", b =>
@@ -161,43 +200,6 @@ namespace WebApiDiplom.Migrations
                     b.ToTable("Colors");
                 });
 
-            modelBuilder.Entity("WebApiDiplom.Models.Contract", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CarId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RentalDuration")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("Contracts");
-                });
-
             modelBuilder.Entity("WebApiDiplom.Models.Employee", b =>
                 {
                     b.Property<int>("Id")
@@ -243,9 +245,6 @@ namespace WebApiDiplom.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int>("ContractId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -253,9 +252,12 @@ namespace WebApiDiplom.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("RentalContractId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ContractId");
+                    b.HasIndex("RentalContractId");
 
                     b.ToTable("Fines");
                 });
@@ -280,7 +282,7 @@ namespace WebApiDiplom.Migrations
                     b.ToTable("JobTitles");
                 });
 
-            modelBuilder.Entity("WebApiDiplom.Models.Model", b =>
+            modelBuilder.Entity("WebApiDiplom.Models.RentalContract", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -288,51 +290,71 @@ namespace WebApiDiplom.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BodyTypeId")
+                    b.Property<int>("CarId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BrandCarId")
+                    b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BrandId")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Capacity")
+                    b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TypeId")
+                    b.Property<int>("RentalDuration")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BodyTypeId");
+                    b.HasIndex("CarId");
 
-                    b.HasIndex("BrandCarId");
+                    b.HasIndex("ClientId");
 
-                    b.ToTable("Models");
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("RentalContracts");
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Car", b =>
                 {
+                    b.HasOne("WebApiDiplom.Models.CarModel", "CarModel")
+                        .WithMany("Cars")
+                        .HasForeignKey("CarModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebApiDiplom.Models.Color", "Color")
                         .WithMany("Cars")
                         .HasForeignKey("ColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApiDiplom.Models.Model", "Model")
-                        .WithMany("Cars")
-                        .HasForeignKey("ModelId")
+                    b.Navigation("CarModel");
+
+                    b.Navigation("Color");
+                });
+
+            modelBuilder.Entity("WebApiDiplom.Models.CarModel", b =>
+                {
+                    b.HasOne("WebApiDiplom.Models.BodyType", "BodyType")
+                        .WithMany("CarModels")
+                        .HasForeignKey("BodyTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Color");
+                    b.HasOne("WebApiDiplom.Models.BrandCar", "BrandCar")
+                        .WithMany("CarModels")
+                        .HasForeignKey("BrandCarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Model");
+                    b.Navigation("BodyType");
+
+                    b.Navigation("BrandCar");
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.ClientBrandCar", b =>
@@ -354,33 +376,6 @@ namespace WebApiDiplom.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("WebApiDiplom.Models.Contract", b =>
-                {
-                    b.HasOne("WebApiDiplom.Models.Car", "Car")
-                        .WithMany("Contracts")
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApiDiplom.Models.Client", "Client")
-                        .WithMany("Contracts")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApiDiplom.Models.Employee", "Employee")
-                        .WithMany("Contracts")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-
-                    b.Navigation("Client");
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("WebApiDiplom.Models.Employee", b =>
                 {
                     b.HasOne("WebApiDiplom.Models.JobTitle", "JobTitle")
@@ -394,56 +389,69 @@ namespace WebApiDiplom.Migrations
 
             modelBuilder.Entity("WebApiDiplom.Models.Fine", b =>
                 {
-                    b.HasOne("WebApiDiplom.Models.Contract", "Contract")
+                    b.HasOne("WebApiDiplom.Models.RentalContract", "RentalContract")
                         .WithMany("Fines")
-                        .HasForeignKey("ContractId")
+                        .HasForeignKey("RentalContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Contract");
+                    b.Navigation("RentalContract");
                 });
 
-            modelBuilder.Entity("WebApiDiplom.Models.Model", b =>
+            modelBuilder.Entity("WebApiDiplom.Models.RentalContract", b =>
                 {
-                    b.HasOne("WebApiDiplom.Models.BodyType", "BodyType")
-                        .WithMany("Models")
-                        .HasForeignKey("BodyTypeId")
+                    b.HasOne("WebApiDiplom.Models.Car", "Car")
+                        .WithMany("RentalContracts")
+                        .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApiDiplom.Models.BrandCar", "BrandCar")
-                        .WithMany("Models")
-                        .HasForeignKey("BrandCarId")
+                    b.HasOne("WebApiDiplom.Models.Client", "Client")
+                        .WithMany("RentalContracts")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BodyType");
+                    b.HasOne("WebApiDiplom.Models.Employee", "Employee")
+                        .WithMany("RentalContracts")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("BrandCar");
+                    b.Navigation("Car");
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.BodyType", b =>
                 {
-                    b.Navigation("Models");
+                    b.Navigation("CarModels");
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.BrandCar", b =>
                 {
-                    b.Navigation("ClientBrandCars");
+                    b.Navigation("CarModels");
 
-                    b.Navigation("Models");
+                    b.Navigation("ClientBrandCars");
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Car", b =>
                 {
-                    b.Navigation("Contracts");
+                    b.Navigation("RentalContracts");
+                });
+
+            modelBuilder.Entity("WebApiDiplom.Models.CarModel", b =>
+                {
+                    b.Navigation("Cars");
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Client", b =>
                 {
                     b.Navigation("ClientBrandCars");
 
-                    b.Navigation("Contracts");
+                    b.Navigation("RentalContracts");
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Color", b =>
@@ -451,14 +459,9 @@ namespace WebApiDiplom.Migrations
                     b.Navigation("Cars");
                 });
 
-            modelBuilder.Entity("WebApiDiplom.Models.Contract", b =>
-                {
-                    b.Navigation("Fines");
-                });
-
             modelBuilder.Entity("WebApiDiplom.Models.Employee", b =>
                 {
-                    b.Navigation("Contracts");
+                    b.Navigation("RentalContracts");
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.JobTitle", b =>
@@ -466,9 +469,9 @@ namespace WebApiDiplom.Migrations
                     b.Navigation("Employees");
                 });
 
-            modelBuilder.Entity("WebApiDiplom.Models.Model", b =>
+            modelBuilder.Entity("WebApiDiplom.Models.RentalContract", b =>
                 {
-                    b.Navigation("Cars");
+                    b.Navigation("Fines");
                 });
 #pragma warning restore 612, 618
         }

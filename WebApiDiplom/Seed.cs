@@ -1,24 +1,21 @@
-﻿using System.Diagnostics.Metrics;
-using WebApiDiplom.Data;
+﻿using WebApiDiplom.Data;
 using WebApiDiplom.Models;
-using Contract = WebApiDiplom.Models.Contract;
 
 namespace WebApiDiplom
 {
-    public class Seed
+    public static class Seed
     {
-        private readonly DataContext dataContext;
-        public Seed(DataContext context)
+        public static void SeedDataContext(this IServiceProvider services)
         {
-            this.dataContext = context;
-        }
-        public void SeedDataContext()
-        {
-            if (!dataContext.Contracts.Any())
+            using (var scope = services.CreateScope())
             {
-                var contracts = new List<Contract>()
+                var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+                if (!dataContext.RentalContracts.Any())
                 {
-                    new Contract()
+                    var contracts = new List<RentalContract>()
+                {
+                    new RentalContract()
                     {
                         Client = new Client()
                         {
@@ -47,7 +44,7 @@ namespace WebApiDiplom
                             {
                                 ColorName = "red"
                             },
-                            Model = new Model()
+                            CarModel = new CarModel()
                             {
                                 Name = "Golf",
                                 Capacity = 5,
@@ -85,7 +82,7 @@ namespace WebApiDiplom
                             }
                         }
                     },
-                    new Contract()
+                    new RentalContract()
                     {
                         Client = new Client()
                         {
@@ -114,7 +111,7 @@ namespace WebApiDiplom
                             {
                                 ColorName = "black"
                             },
-                            Model = new Model()
+                            CarModel = new CarModel()
                             {
                                 Name = "S300",
                                 Capacity = 5,
@@ -140,7 +137,7 @@ namespace WebApiDiplom
                             }
                         }
                     },
-                    new Contract()
+                    new RentalContract()
                     {
                         Client = new Client()
                         {
@@ -169,7 +166,7 @@ namespace WebApiDiplom
                             {
                                 ColorName = "white"
                             },
-                            Model = new Model()
+                            CarModel = new CarModel()
                             {
                                 Name = "SLK280",
                                 Capacity = 2,
@@ -187,8 +184,9 @@ namespace WebApiDiplom
                         RentalDuration = 10,
                     }
                 };
-                dataContext.Contracts.AddRange(contracts);
-                dataContext.SaveChanges();
+                    dataContext.RentalContracts.AddRange(contracts);
+                    dataContext.SaveChanges();
+                }
             }
         }
     }

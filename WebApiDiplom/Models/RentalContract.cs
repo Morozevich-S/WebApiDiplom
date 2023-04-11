@@ -1,6 +1,6 @@
 ﻿namespace WebApiDiplom.Models
 {
-    public class Contract
+    public class RentalContract
     {
         public int Id { get; set; }
         public int ClientId { get; set; }
