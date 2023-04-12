@@ -9,6 +9,9 @@ namespace WebApiDiplom.Helper
         public MappingProfiles() 
         {
             CreateMap<CarModel, CarModelDto>();
+            CreateMap<Client, ClientDto>();
+            CreateMap<RentalContract, RentalContractDto>();
+            CreateMap<BodyType, BodyTypeDto>();
         }
     }
 }

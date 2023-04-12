@@ -24,7 +24,6 @@ namespace WebApiDiplom.Controllers
         public IActionResult GetCarModels()
         {
             var carModels = _mapper.Map<List<CarModelDto>>(_carModelRepository.GetCarModels());
-            //var carModels = _carModelRepository.GetCarModels();
 
             if (!ModelState.IsValid)
             {
@@ -36,14 +35,14 @@ namespace WebApiDiplom.Controllers
         [HttpGet("{carModelId}")]
         [ProducesResponseType(200, Type = typeof(CarModel))]
         [ProducesResponseType(400)]
-        public IActionResult GetCarModel(int id)
+        public IActionResult GetCarModel(int carModelId)
         {
-            if (!_carModelRepository.CarModelExists(id))
+            if (!_carModelRepository.CarModelExists(carModelId))
             {
                 return NotFound();
             }
 
-            var carModel =  _mapper.Map<CarModelDto>(_carModelRepository.GetCarModel(id));
+            var carModel =  _mapper.Map<CarModelDto>(_carModelRepository.GetCarModel(carModelId));
 
             if (!ModelState.IsValid)
             {
@@ -56,14 +55,14 @@ namespace WebApiDiplom.Controllers
         [HttpGet("{carModelId}/capacity")]
         [ProducesResponseType(200, Type = typeof(int))]
         [ProducesResponseType(400)]
-        public IActionResult GetCarModelCapacity(int modelId)
+        public IActionResult GetCarModelCapacity(int carModelId)
         {
-            if (!_carModelRepository.CarModelExists(modelId))
+            if (!_carModelRepository.CarModelExists(carModelId))
             {
                 return NotFound();
             }
 
-            var capacity = _carModelRepository.GetCarModelCapacity(modelId);
+            var capacity = _carModelRepository.GetCarModelCapacity(carModelId);
 
             if (!ModelState.IsValid)
             {
@@ -72,6 +71,5 @@ namespace WebApiDiplom.Controllers
 
             return Ok(capacity);
         }
-
     }
 }
