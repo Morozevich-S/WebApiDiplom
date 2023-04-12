@@ -1,4 +1,5 @@
-﻿using WebApiDiplom.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApiDiplom.Data;
 using WebApiDiplom.Models;
 
 namespace WebApiDiplom
@@ -9,7 +10,10 @@ namespace WebApiDiplom
         {
             using (var scope = services.CreateScope())
             {
+                
                 var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+
+                dataContext.Database.Migrate();
 
                 if (!dataContext.RentalContracts.Any())
                 {

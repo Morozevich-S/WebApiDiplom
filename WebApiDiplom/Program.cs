@@ -18,6 +18,7 @@ namespace WebApiDiplom
             builder.Services.AddScoped<IRentalContractRepository, RentalContractRepository>();
             builder.Services.AddScoped<ICarModelRepository, CarModelRepository>();
             builder.Services.AddScoped<IBodyTypeRepository, BodyTypeRepository>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

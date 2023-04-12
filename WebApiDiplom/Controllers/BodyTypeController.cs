@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
-using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
@@ -53,7 +52,7 @@ namespace WebApiDiplom.Controllers
             return Ok(bodyType);
         }
 
-        [HttpGet("/carModels/{carModelId}")]
+        [HttpGet("{carModelId}")]
         [ProducesResponseType(200, Type = typeof(BodyType))]
         [ProducesResponseType(400)]
         public IActionResult GetBodyTypeByCarModel(int carModelId)
@@ -68,7 +67,7 @@ namespace WebApiDiplom.Controllers
             return Ok(country);
         }
 
-        [HttpGet("{bodyTypeId}")]
+        [HttpGet("carModel/{bodyTypeId}")]
         [ProducesResponseType(200, Type = typeof(ICollection<CarModel>))]
         [ProducesResponseType(400)]
         public IActionResult GetCarModelsByBodyType(int bodyTypeId)

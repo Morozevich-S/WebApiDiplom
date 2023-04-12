@@ -12,6 +12,7 @@ namespace WebApiDiplom.Helper
             CreateMap<Client, ClientDto>();
             CreateMap<RentalContract, RentalContractDto>();
             CreateMap<BodyType, BodyTypeDto>();
+            CreateMap<Employee, EmployeeDto>();
         }
     }
 }

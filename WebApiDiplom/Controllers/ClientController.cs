@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
-using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
@@ -53,7 +52,7 @@ namespace WebApiDiplom.Controllers
             return Ok(client);
         }
 
-        [HttpGet("{rentalContract/{clientId}")]
+        [HttpGet("rentalContract/{clientId}")]
         [ProducesResponseType(200, Type = typeof(ICollection<RentalContract>))]
         [ProducesResponseType(400)]
         public IActionResult GetRentalContractByClient(int clientlId)
