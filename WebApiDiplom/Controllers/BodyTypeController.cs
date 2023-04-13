@@ -35,7 +35,7 @@ namespace WebApiDiplom.Controllers
         [HttpGet("{bodyTypeId}")]
         [ProducesResponseType(200, Type = typeof(BodyType))]
         [ProducesResponseType(400)]
-        public IActionResult GetBodyTypes(int bodyTypeId)
+        public IActionResult GetBodyType(int bodyTypeId)
         {
             if (!_bodyTypeRepository.BodyTypeExists(bodyTypeId))
             {
@@ -52,7 +52,7 @@ namespace WebApiDiplom.Controllers
             return Ok(bodyType);
         }
 
-        [HttpGet("{carModelId}")]
+        [HttpGet("/api/CarModel/{carModelId}/bodyType")]
         [ProducesResponseType(200, Type = typeof(BodyType))]
         [ProducesResponseType(400)]
         public IActionResult GetBodyTypeByCarModel(int carModelId)
@@ -67,7 +67,7 @@ namespace WebApiDiplom.Controllers
             return Ok(country);
         }
 
-        [HttpGet("carModel/{bodyTypeId}")]
+        [HttpGet("{bodyTypeId}/carModel")]
         [ProducesResponseType(200, Type = typeof(ICollection<CarModel>))]
         [ProducesResponseType(400)]
         public IActionResult GetCarModelsByBodyType(int bodyTypeId)

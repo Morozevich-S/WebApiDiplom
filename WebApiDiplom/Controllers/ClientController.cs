@@ -52,18 +52,18 @@ namespace WebApiDiplom.Controllers
             return Ok(client);
         }
 
-        [HttpGet("rentalContract/{clientId}")]
+        [HttpGet("{clientId}/rentalContract")]
         [ProducesResponseType(200, Type = typeof(ICollection<RentalContract>))]
         [ProducesResponseType(400)]
-        public IActionResult GetRentalContractByClient(int clientlId)
+        public IActionResult GetRentalContractByClient(int clientId)
         {
-            if (!_clientRepository.ClientExists(clientlId))
+            if (!_clientRepository.ClientExists(clientId))
             {
                 return NotFound();
             }
 
             var rentalContracts = _mapper.Map<List<RentalContractDto>>(_clientRepository
-                .GetRentalContractByClient(clientlId));
+                .GetRentalContractByClient(clientId));
 
             if (!ModelState.IsValid)
             {

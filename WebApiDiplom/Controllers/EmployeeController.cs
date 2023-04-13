@@ -53,7 +53,7 @@ namespace WebApiDiplom.Controllers
             return Ok(employee);
         }
 
-        [HttpGet("rentalContract/{contractId}")]
+        [HttpGet("/api/RentalContract/{contractId}/employee")]
         [ProducesResponseType(200, Type = typeof(Employee))]
         [ProducesResponseType(400)]
         public IActionResult GetEmployeeByRentalContract(int contractId)
@@ -68,7 +68,7 @@ namespace WebApiDiplom.Controllers
             return Ok(employee);
         }
 
-        [HttpGet("rentalContract/{employeeId}")]
+        [HttpGet("{employeeId}/rentalContract")]
         [ProducesResponseType(200, Type = typeof(ICollection<Employee>))]
         [ProducesResponseType(400)]
         public IActionResult GetRentalContractByEmployee(int employeeId)
