@@ -16,6 +16,7 @@ namespace WebApiDiplom
             builder.Services.AddControllers();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IBodyTypeRepository, BodyTypeRepository>();
+            builder.Services.AddScoped<ICarRepository, CarRepository>();
             builder.Services.AddScoped<ICarModelRepository, CarModelRepository>();
             builder.Services.AddScoped<IClientRepository, ClientRepository>();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();

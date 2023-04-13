@@ -73,6 +73,11 @@ namespace WebApiDiplom.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetRentalContractByEmployee(int employeeId)
         {
+            if (!_employeeRepository.EmployeeExists(employeeId))
+            {
+                return NotFound();
+            }
+
             var rentalContracts = _mapper.Map<List<RentalContractDto>>(_employeeRepository
                 .GetRentalContractByEmployee(employeeId));
 
