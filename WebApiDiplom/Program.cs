@@ -22,6 +22,7 @@ namespace WebApiDiplom
             builder.Services.AddScoped<IClientRepository, ClientRepository>();
             builder.Services.AddScoped<IColorRepository, ColorRepository>();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IFineRepository, FineRepository>();
             builder.Services.AddScoped<IJobTitleRepository, JobTitleRepository>();
             builder.Services.AddScoped<IRentalContractRepository, RentalContractRepository>();
 

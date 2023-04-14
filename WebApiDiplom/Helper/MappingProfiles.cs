@@ -15,6 +15,7 @@ namespace WebApiDiplom.Helper
             CreateMap<Color, ColorDto>();
             CreateMap<Client, ClientDto>();
             CreateMap<Employee, EmployeeDto>();
+            CreateMap<Fine, FineDto>();
             CreateMap<JobTitle, JobTitleDto>();
             CreateMap<RentalContract, RentalContractDto>();
         }
