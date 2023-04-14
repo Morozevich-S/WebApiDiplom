@@ -1,4 +1,5 @@
-﻿using WebApiDiplom.Data;
+﻿using System.Diagnostics.Contracts;
+using WebApiDiplom.Data;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
 
@@ -13,14 +14,25 @@ namespace WebApiDiplom.Repository
             _context = context;
         }
 
-        public RentalContract GetRentalContract(int id)
+        public Car GetCarByRentalContract(int id)
         {
-            throw new NotImplementedException();
+            return _context.RentalContracts.Where(c => c.Id == id)
+                .Select(c => c.Car).FirstOrDefault();
         }
 
-        public ICollection<RentalContract> GetRentalContracts() 
+        public RentalContract GetRentalContract(int id)
+        {
+            return _context.RentalContracts.Where(c => c.Id == id).FirstOrDefault();
+        }
+
+        public ICollection<RentalContract> GetRentalContracts()
         {
             return _context.RentalContracts.OrderBy(c => c.Id).ToList();
+        }
+
+        public bool RentalContractExists(int id)
+        {
+            return _context.RentalContracts.Any(c => c.Id == id);
         }
     }
 }

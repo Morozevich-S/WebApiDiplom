@@ -6,5 +6,7 @@ namespace WebApiDiplom.Interfaces
     {
         ICollection<RentalContract> GetRentalContracts();
         RentalContract GetRentalContract(int id);
+        bool RentalContractExists(int id);
+        Car GetCarByRentalContract(int id);
     }
 }

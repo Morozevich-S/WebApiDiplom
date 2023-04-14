@@ -11,8 +11,5 @@ namespace WebApiDiplom.Dto
         public int RentalDuration { get; set; }
         public int Price { get; set; }
         public int EmployeeId { get; set; }
-        public Employee Employee { get; set; }
-        public Client Client { get; set; }
-        public Car Car { get; set; }
     }
 }

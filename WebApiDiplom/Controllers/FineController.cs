@@ -58,6 +58,11 @@ namespace WebApiDiplom.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetClientByFine(int fineId)
         {
+            if (!_fineRepository.FineExists(fineId))
+            {
+                return NotFound();
+            }
+
             var client = _mapper.Map<ClientDto>(_fineRepository.GetClientByFine(fineId));
 
             if (!ModelState.IsValid)
@@ -73,6 +78,11 @@ namespace WebApiDiplom.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetRentalContractByFine(int fineId)
         {
+            if (!_fineRepository.FineExists(fineId))
+            {
+                return NotFound();
+            }
+
             var rentalContract = _mapper.Map<RentalContract>(_fineRepository.GetRentalContractByFine(fineId));
 
             if (!ModelState.IsValid)
