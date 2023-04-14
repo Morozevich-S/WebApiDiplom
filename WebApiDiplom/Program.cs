@@ -20,6 +20,7 @@ namespace WebApiDiplom
             builder.Services.AddScoped<ICarRepository, CarRepository>();
             builder.Services.AddScoped<ICarModelRepository, CarModelRepository>();
             builder.Services.AddScoped<IClientRepository, ClientRepository>();
+            builder.Services.AddScoped<IColorRepository, ColorRepository>();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IRentalContractRepository, RentalContractRepository>();
 
