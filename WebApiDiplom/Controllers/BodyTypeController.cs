@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
+using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
@@ -80,6 +81,42 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(carModels);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateBodyType([FromBody] BodyTypeDto bodyTypeCreate)
+        {
+            if (bodyTypeCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var bodyType = _bodyTypeRepository.GetBodyTypes()
+                .Where(b => b.Type.Trim().ToUpper() == bodyTypeCreate.Type.Trim().ToUpper())
+                .FirstOrDefault();
+
+            if (bodyType != null)
+            {
+                ModelState.AddModelError("", "Body type already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var bodyTypeMap = _mapper.Map<BodyType>(bodyTypeCreate);
+
+            if (!_bodyTypeRepository.CreateBodyType(bodyTypeMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

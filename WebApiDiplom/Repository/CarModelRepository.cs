@@ -36,5 +36,17 @@ namespace WebApiDiplom.Repository
         {
             return _context.CarModels.Any(cm => cm.Id == modelId);
         }
+
+        public bool CreateCarModel(CarModel carModel)
+        {
+            _context.CarModels.Add(carModel);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }

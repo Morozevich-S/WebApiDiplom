@@ -11,5 +11,7 @@ namespace WebApiDiplom.Interfaces
         Color GetColorByCar(int id);
         CarModel GetCarModelByCar(int id);
         bool CarExists(int id);
+        bool CreateCar(Car car);
+        bool Save();
     }
 }

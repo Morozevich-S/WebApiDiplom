@@ -12,11 +12,14 @@ namespace WebApiDiplom.Controllers
     public class FineController : Controller
     {
         private readonly IFineRepository _fineRepository;
+        private readonly IRentalContractRepository _rentalContractRepository;
         private readonly IMapper _mapper;
-        
-        public FineController(IFineRepository fineRepository, IMapper mapper)
+
+        public FineController(IFineRepository fineRepository,
+                              IRentalContractRepository rentalContractRepository, IMapper mapper)
         {
             _fineRepository = fineRepository;
+            _rentalContractRepository = rentalContractRepository;
             _mapper = mapper;
         }
 
@@ -91,6 +94,44 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(rentalContract);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateFine([FromQuery] int rentalContractId, [FromBody] FineDto fineCreate)
+        {
+            if (fineCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fine = _fineRepository.GetFines()
+                .Where(f => f.Id == fineCreate.Id)
+                .FirstOrDefault();
+
+            if (fine != null)
+            {
+                ModelState.AddModelError("", "Fine already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var fineMap = _mapper.Map<Fine>(fineCreate);
+
+            fineMap.RentalContract = _rentalContractRepository.GetRentalContract(rentalContractId);
+
+            if (!_fineRepository.CreateFine(fineMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

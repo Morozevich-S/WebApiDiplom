@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
+using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
@@ -10,11 +11,16 @@ namespace WebApiDiplom.Controllers
     [ApiController]
     public class CarModelController : Controller
     {
+        private readonly IBodyTypeRepository _bodyTypeRepository;
+        private readonly IBrandCarRepository _brandCarRepository;
         private readonly ICarModelRepository _carModelRepository;
         private readonly IMapper _mapper;
 
-        public CarModelController(ICarModelRepository carModelRepository, IMapper mapper)
+        public CarModelController(IBodyTypeRepository bodyTypeRepository,
+            IBrandCarRepository brandCarRepository, ICarModelRepository carModelRepository, IMapper mapper)
         {
+            _bodyTypeRepository = bodyTypeRepository;
+            _brandCarRepository = brandCarRepository;
             _carModelRepository = carModelRepository;
             _mapper = mapper;
         }
@@ -70,6 +76,47 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(capacity);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCarModel([FromQuery] int bodyTypeId,
+                                            [FromQuery] int brandCarId,
+                                            [FromBody] CarModelDto carModelCreate)
+        {
+            if (carModelCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var carModel = _carModelRepository.GetCarModels()
+                .Where(c => c.Name.Trim().ToUpper() == carModelCreate.Name.Trim().ToUpper())
+                .FirstOrDefault();
+
+            if (carModel != null)
+            {
+                ModelState.AddModelError("", "Car model already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var carModelMap = _mapper.Map<CarModel>(carModelCreate);
+
+            carModelMap.BodyType = _bodyTypeRepository.GetBodyType(bodyTypeId);
+            carModelMap.BrandCar = _brandCarRepository.GetBrandCar(brandCarId);
+
+            if (!_carModelRepository.CreateCarModel(carModelMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

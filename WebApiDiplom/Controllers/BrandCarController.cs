@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
+using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
@@ -65,6 +66,42 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(carModels);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateBrandCar([FromBody] BrandCarDto brandCarCreate)
+        {
+            if (brandCarCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var brandCar = _brandCarRepository.GetBrandCars()
+                .Where(b => b.Name.Trim().ToUpper() == brandCarCreate.Name.Trim().ToUpper())
+                .FirstOrDefault();
+
+            if (brandCar != null)
+            {
+                ModelState.AddModelError("", "Brand car already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var brandCarMap = _mapper.Map<BrandCar>(brandCarCreate);
+
+            if (!_brandCarRepository.CreateBrandCar(brandCarMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

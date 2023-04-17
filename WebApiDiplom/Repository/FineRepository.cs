@@ -14,6 +14,12 @@ namespace WebApiDiplom.Repository
             _context = context;
         }
 
+        public bool CreateFine(Fine fine)
+        {
+            _context.Fines.Add(fine);
+            return Save();
+        }
+
         public bool FineExists(int id)
         {
             return _context.Fines.Any(f => f.Id == id);
@@ -40,6 +46,12 @@ namespace WebApiDiplom.Repository
         {
             return _context.Fines.Where(f => f.Id == id).
                 Select(c => c.RentalContract).FirstOrDefault();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

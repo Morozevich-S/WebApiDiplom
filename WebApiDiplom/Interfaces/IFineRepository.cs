@@ -9,5 +9,7 @@ namespace WebApiDiplom.Interfaces
         RentalContract GetRentalContractByFine(int id);
         Client GetClientByFine(int id);
         bool FineExists(int id);
+        bool CreateFine(Fine fine);
+        bool Save();
     }
 }

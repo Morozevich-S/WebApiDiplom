@@ -18,6 +18,12 @@ namespace WebApiDiplom.Repository
             return _context.BrandCars.Any(b => b.Id == id);
         }
 
+        public bool CreateBrandCar(BrandCar brandCar)
+        {
+            _context.BrandCars.Add(brandCar);
+            return Save();
+        }
+
         public BrandCar GetBrandCar(int id)
         {
             return _context.BrandCars.Where(b => b.Id == id).FirstOrDefault();
@@ -31,6 +37,12 @@ namespace WebApiDiplom.Repository
         public ICollection<CarModel> GetCarModelByBrendCar(int id)
         {
             return _context.CarModels.Where(m => m.BrandCar.Id == id).ToList();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

@@ -8,5 +8,7 @@ namespace WebApiDiplom.Interfaces
         JobTitle GetJobTitle(int id);
         ICollection<Employee> GetEmployeeByJobTitle(int jobTitleId);
         bool JobTitleExists(int id);
+        bool CreateJobTitle(JobTitle jobTitle);
+        bool Save();
     }
 }

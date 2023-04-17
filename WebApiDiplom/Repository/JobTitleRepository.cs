@@ -13,6 +13,12 @@ namespace WebApiDiplom.Repository
             _context = context;
         }
 
+        public bool CreateJobTitle(JobTitle jobTitle)
+        {
+            _context.Add(jobTitle);
+            return Save();
+        }
+
         public ICollection<Employee> GetEmployeeByJobTitle(int jobTitleId)
         {
             return _context.Employees.Where(e => e.JobTitle.Id == jobTitleId).ToList();
@@ -31,6 +37,12 @@ namespace WebApiDiplom.Repository
         public bool JobTitleExists(int id)
         {
             return _context.JobTitles.Any(j => j.Id == id);
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

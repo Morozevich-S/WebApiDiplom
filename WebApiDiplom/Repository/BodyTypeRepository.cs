@@ -18,6 +18,12 @@ namespace WebApiDiplom.Repository
             return _context.BodyTypes.Any(t => t.Id == id);
         }
 
+        public bool CreateBodyType(BodyType bodyType)
+        {
+            _context.BodyTypes.Add(bodyType);
+            return Save();
+        }
+
         public BodyType GetBodyType(int id)
         {
             return _context.BodyTypes.Where(t => t.Id == id).FirstOrDefault();
@@ -37,6 +43,12 @@ namespace WebApiDiplom.Repository
         public ICollection<CarModel> GetCarModelsByBodyType(int bodyTypeId)
         {
             return _context.CarModels.Where(m => m.BodyType.Id == bodyTypeId).ToList();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

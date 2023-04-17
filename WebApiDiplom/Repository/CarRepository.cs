@@ -18,6 +18,12 @@ namespace WebApiDiplom.Repository
             return _context.Cars.Any(c => c.Id == id);
         }
 
+        public bool CreateCar(Car car)
+        {
+            _context.Cars.Add(car);
+            return Save();
+        }
+
         public Car GetCar(int id)
         {
             return _context.Cars.Where(c => c.Id == id).FirstOrDefault();
@@ -48,6 +54,12 @@ namespace WebApiDiplom.Repository
         {
             return _context.Cars.Where(c => c.Id == id).
                Select(c => c.Color).FirstOrDefault();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

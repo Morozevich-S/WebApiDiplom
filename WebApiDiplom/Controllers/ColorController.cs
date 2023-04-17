@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
+using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
@@ -50,6 +51,42 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(color);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateColor([FromBody] ColorDto colorCreate)
+        {
+            if (colorCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var color = _colorRepository.GetColors()
+                .Where(c => c.ColorName.Trim().ToUpper() == colorCreate.ColorName.Trim().ToUpper())
+                .FirstOrDefault();
+
+            if (color != null)
+            {
+                ModelState.AddModelError("", "Color already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var colorMap = _mapper.Map<Color>(colorCreate);
+
+            if (!_colorRepository.CreateColor(colorMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

@@ -19,6 +19,22 @@ namespace WebApiDiplom.Repository
             return _context.Clients.Any(c => c.Id == id);
         }
 
+        public bool CreateClient(int brandId, Client client)
+        {
+            var clientBrandCarEntity = _context.BrandCars.Where(c => c.Id == brandId).FirstOrDefault();
+
+            var clientBrandCar = new ClientBrandCar()
+            {
+                Client = client,
+                BrandCar = clientBrandCarEntity
+            };
+
+            _context.Add(clientBrandCar);
+            _context.Add(client);
+
+            return Save();
+        }
+
         public Client GetClient(int id)
         {
             return _context.Clients.Where(c => c.Id == id).FirstOrDefault();
@@ -37,6 +53,12 @@ namespace WebApiDiplom.Repository
         public ICollection<RentalContract> GetRentalContractByClient(int clientId)
         {
             return _context.RentalContracts.Where(rc => rc.ClientId == clientId).ToList();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

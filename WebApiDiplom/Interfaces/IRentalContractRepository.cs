@@ -8,5 +8,7 @@ namespace WebApiDiplom.Interfaces
         RentalContract GetRentalContract(int id);
         bool RentalContractExists(int id);
         Car GetCarByRentalContract(int id);
+        bool CreateRentalContract(RentalContract rentalContract);
+        bool Save();
     }
 }

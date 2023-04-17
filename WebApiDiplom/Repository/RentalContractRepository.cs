@@ -14,6 +14,12 @@ namespace WebApiDiplom.Repository
             _context = context;
         }
 
+        public bool CreateRentalContract(RentalContract rentalContract)
+        {
+            _context.Add(rentalContract);
+            return Save();
+        }
+
         public Car GetCarByRentalContract(int id)
         {
             return _context.RentalContracts.Where(c => c.Id == id)
@@ -33,6 +39,12 @@ namespace WebApiDiplom.Repository
         public bool RentalContractExists(int id)
         {
             return _context.RentalContracts.Any(c => c.Id == id);
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

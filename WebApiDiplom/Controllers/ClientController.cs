@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
+using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
@@ -71,6 +72,42 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(rentalContracts);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateClient([FromQuery] int brandId, [FromBody] ClientDto clientCreate)
+        {
+            if (clientCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var client = _clientRepository.GetClients()
+                .Where(c => c.Surname.Trim().ToUpper() == clientCreate.Surname.Trim().ToUpper())
+                .FirstOrDefault();
+
+            if (client != null)
+            {
+                ModelState.AddModelError("", "Client already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var clientMap = _mapper.Map<Client>(clientCreate);
+
+            if (!_clientRepository.CreateClient(brandId, clientMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

@@ -12,11 +12,13 @@ namespace WebApiDiplom.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IJobTitleRepository _jobTitleRepository;
         private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeRepository employeeRepository, IMapper mapper)
+        public EmployeeController(IEmployeeRepository employeeRepository, IJobTitleRepository jobTitleRepository, IMapper mapper)
         {
             _employeeRepository = employeeRepository;
+            _jobTitleRepository = jobTitleRepository;
             _mapper = mapper;
         }
 
@@ -87,6 +89,44 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(rentalContracts);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateEmployee([FromQuery] int jobTitleId, [FromBody] EmployeeDto employeeCreate)
+        {
+            if (employeeCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var employee = _employeeRepository.GetEmployees()
+                .Where(e => e.Surname.Trim().ToUpper() == employeeCreate.Surname.Trim().ToUpper())
+                .FirstOrDefault();
+
+            if (employee != null)
+            {
+                ModelState.AddModelError("", "Employee already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var employeeMap = _mapper.Map<Employee>(employeeCreate);
+
+            employeeMap.JobTitle = _jobTitleRepository.GetJobTitle(jobTitleId);
+
+            if (!_employeeRepository.CreateEmployee(employeeMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

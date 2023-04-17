@@ -1,5 +1,4 @@
-﻿
-using WebApiDiplom.Models;
+﻿using WebApiDiplom.Models;
 
 namespace WebApiDiplom.Interfaces
 {
@@ -8,5 +7,7 @@ namespace WebApiDiplom.Interfaces
         ICollection<Color> GetColors();
         Color GetColor(int id);
         bool ColorExists(int id);
+        bool CreateColor(Color color);
+        bool Save();
     }
 }

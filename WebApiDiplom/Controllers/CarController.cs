@@ -12,11 +12,18 @@ namespace WebApiDiplom.Controllers
     public class CarController : Controller
     {
         private readonly ICarRepository _carRepository;
+        private readonly ICarModelRepository _carModelRepository;
+        private readonly IColorRepository _colorRepository;
         private readonly IMapper _mapper;
 
-        public CarController(ICarRepository carRepository, IMapper mapper)
+        public CarController(ICarRepository carRepository, 
+                             ICarModelRepository carModelRepository, 
+                             IColorRepository colorRepository, 
+                             IMapper mapper)
         {
             _carRepository = carRepository;
+            _carModelRepository = carModelRepository;
+            _colorRepository = colorRepository;
             _mapper = mapper;
         }
 
@@ -111,6 +118,45 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(color);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCar([FromQuery] int carModelId, [FromQuery] int colorId, [FromBody] CarDto carCreate)
+        {
+            if (carCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var car = _carRepository.GetCars()
+                .Where(c => c.Id == carCreate.Id)
+                .FirstOrDefault();
+
+            if (car != null)
+            {
+                ModelState.AddModelError("", "Car already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var carMap = _mapper.Map<Car>(carCreate);
+
+            carMap.CarModel = _carModelRepository.GetCarModel(carModelId);
+            carMap.Color = _colorRepository.GetColor(colorId);
+
+            if (!_carRepository.CreateCar(carMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

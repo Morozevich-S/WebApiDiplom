@@ -11,18 +11,28 @@ namespace WebApiDiplom.Controllers
     [ApiController]
     public class RentalContractController : Controller
     {
+        private readonly ICarRepository _carRepository;
+        private readonly IClientRepository _clientRepository;
+        private readonly IEmployeeRepository _employeeRepository;
         private readonly IRentalContractRepository _rentalContractRepository;
         private readonly IMapper _mapper;
 
-        public RentalContractController(IRentalContractRepository rentalContractRepository, IMapper mapper)
+        public RentalContractController(ICarRepository carRepository, 
+                                        IClientRepository clientRepository, 
+                                        IEmployeeRepository employeeRepository,
+                                        IRentalContractRepository rentalContractRepository, 
+                                        IMapper mapper)
         {
+            _carRepository = carRepository;
+            _clientRepository = clientRepository;
+            _employeeRepository = employeeRepository;
             _rentalContractRepository = rentalContractRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<RentalContract>))]
-        public IActionResult GetRentalContracts() 
+        public IActionResult GetRentalContracts()
         {
             var rentalContracts = _mapper.Map<List<RentalContractDto>>(_rentalContractRepository.GetRentalContracts());
 
@@ -67,6 +77,48 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(car);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateRentalContract([FromQuery] int carId, [FromQuery] int clientId,
+                                                  [FromQuery] int employeeId,
+                                                  [FromBody] RentalContractDto rentalContractCreate)
+        {
+            if (rentalContractCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var rentalContract = _rentalContractRepository.GetRentalContracts()
+                .Where(r => r.Id == rentalContractCreate.Id)
+                .FirstOrDefault();
+
+            if (rentalContract != null)
+            {
+                ModelState.AddModelError("", "Rental contract already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var rentalContractMap = _mapper.Map<RentalContract>(rentalContractCreate);
+
+            rentalContractMap.Car = _carRepository.GetCar(carId);
+            rentalContractMap.Client = _clientRepository.GetClient(clientId);
+            rentalContractMap.Employee = _employeeRepository.GetEmployee(employeeId);
+
+            if (!_rentalContractRepository.CreateRentalContract(rentalContractMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
         }
     }
 }

@@ -9,5 +9,7 @@ namespace WebApiDiplom.Interfaces
         CarModel GetCarModel(string modelName);
         int GetCarModelCapacity(int modelId);
         bool CarModelExists(int modelId);
+        bool CreateCarModel(CarModel carModel);
+        bool Save();
     }
 }

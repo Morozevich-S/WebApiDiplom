@@ -67,5 +67,41 @@ namespace WebApiDiplom.Controllers
 
             return Ok(employees);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateJobTitle([FromBody] JobTitleDto jobTitleCreate)
+        {
+            if(jobTitleCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var jobTitle = _jobTitleRepository.GetJobTitles()
+                .Where(j => j.Title.Trim().ToUpper() ==  jobTitleCreate.Title.Trim().ToUpper())
+                .FirstOrDefault();
+
+            if (jobTitle != null) 
+            {
+                ModelState.AddModelError("", "Job title already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var jobTitleMap = _mapper.Map<JobTitle>(jobTitleCreate);
+
+            if(!_jobTitleRepository.CreateJobTitle(jobTitleMap))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created");
+        }
     }
 }

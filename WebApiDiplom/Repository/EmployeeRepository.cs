@@ -13,6 +13,12 @@ namespace WebApiDiplom.Repository
             _context = context;
         }
 
+        public bool CreateEmployee(Employee employee)
+        {
+            _context.Employees.Add(employee);
+            return Save();
+        }
+
         public bool EmployeeExists(int id)
         {
             return _context.Employees.Any(e => e.Id == id);
@@ -37,6 +43,12 @@ namespace WebApiDiplom.Repository
         public ICollection<RentalContract> GetRentalContractByEmployee(int employeeId)
         {
             return _context.RentalContracts.Where(c => c.Employee.Id == employeeId).ToList();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }
