@@ -44,5 +44,11 @@ namespace WebApiDiplom.Repository
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpgradeJobTitle(JobTitle jobTitle)
+        {
+            _context.Update(jobTitle);
+            return Save();
+        }
     }
 }

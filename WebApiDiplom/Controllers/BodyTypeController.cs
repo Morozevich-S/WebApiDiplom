@@ -118,5 +118,42 @@ namespace WebApiDiplom.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{bodyTypeId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateBodyType(int bodyTypeId, [FromBody] BodyTypeDto updateBodyType)
+        {
+            if (updateBodyType == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if(bodyTypeId != updateBodyType.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if(!_bodyTypeRepository.BodyTypeExists(bodyTypeId))
+            {
+                return NotFound();
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var bodyTypeMap = _mapper.Map<BodyType>(updateBodyType);
+
+            if (!_bodyTypeRepository.UpdateBodyType(bodyTypeMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating body type");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

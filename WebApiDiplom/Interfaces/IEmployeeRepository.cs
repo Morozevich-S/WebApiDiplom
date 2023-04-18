@@ -10,6 +10,7 @@ namespace WebApiDiplom.Interfaces
         ICollection<RentalContract> GetRentalContractByEmployee(int employeeId);
         bool EmployeeExists(int id);
         bool CreateEmployee(Employee employee);
+        bool UpdateEmployee(Employee employee);
         bool Save();
     }
 }

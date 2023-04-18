@@ -10,6 +10,7 @@ namespace WebApiDiplom.Interfaces
         ICollection<CarModel> GetCarModelsByBodyType(int bodyTypeId);
         bool BodyTypeExists(int id);
         bool CreateBodyType(BodyType bodyType);
+        bool UpdateBodyType(BodyType bodyType);
         bool Save();
     }
 }

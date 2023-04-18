@@ -61,5 +61,11 @@ namespace WebApiDiplom.Repository
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdateCar(Car car)
+        {
+            _context.Update(car);
+            return Save();
+        }
     }
 }

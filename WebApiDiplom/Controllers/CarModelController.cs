@@ -118,5 +118,42 @@ namespace WebApiDiplom.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{carModelId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCarModel(int carModelId, [FromBody] CarModelDto updateCarModel)
+        {
+            if (updateCarModel == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (carModelId != updateCarModel.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_carModelRepository.CarModelExists(carModelId))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var carModelMap = _mapper.Map<CarModel>(updateCarModel);
+
+            if (!_carModelRepository.UpdateCarModel(carModelMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating car model");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

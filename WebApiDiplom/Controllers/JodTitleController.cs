@@ -103,5 +103,42 @@ namespace WebApiDiplom.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{jobTitleId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateJobTitle(int jobTitleId, [FromBody] JobTitleDto updateJobTitle)
+        {
+            if (updateJobTitle == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (jobTitleId != updateJobTitle.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_jobTitleRepository.JobTitleExists(jobTitleId))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var jobTitleMap = _mapper.Map<JobTitle>(updateJobTitle);
+
+            if (!_jobTitleRepository.UpgradeJobTitle(jobTitleMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating job title");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

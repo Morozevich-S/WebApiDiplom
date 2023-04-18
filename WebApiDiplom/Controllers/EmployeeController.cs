@@ -128,5 +128,42 @@ namespace WebApiDiplom.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{employeeId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateEmployee(int employeeId, [FromBody] EmployeeDto updateEmployee)
+        {
+            if (updateEmployee == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (employeeId != updateEmployee.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_employeeRepository.EmployeeExists(employeeId))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var employeeMap = _mapper.Map<Employee>(updateEmployee);
+
+            if (!_employeeRepository.UpdateEmployee(employeeMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating employee");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

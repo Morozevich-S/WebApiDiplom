@@ -133,5 +133,42 @@ namespace WebApiDiplom.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{fineId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateFine(int fineId, [FromBody] FineDto updateFine)
+        {
+            if (updateFine == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (fineId != updateFine.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_fineRepository.FineExists(fineId))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var fineMap = _mapper.Map<Fine>(updateFine);
+
+            if (!_fineRepository.UpdateFine(fineMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating fine");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

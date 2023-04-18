@@ -14,21 +14,20 @@ namespace WebApiDiplom.Repository
             _context = context;
         }
 
-        public bool CreateRentalContract(RentalContract rentalContract)
-      //public bool CreateRentalContract(int clientId, int carId, RentalContract rentalContract)
+      public bool CreateRentalContract(int clientId, int carId, RentalContract rentalContract)
         {
-            //var client = _context.Clients.Where(c => c.Id == clientId).FirstOrDefault();
-            //var branCarEntity = _context.Cars.Where(c => c.Id == carId)
-            //                                  .Select(cm => cm.CarModel)
-            //                                  .Select(cm => cm.BrandCar).FirstOrDefault();
+            var client = _context.Clients.Where(c => c.Id == clientId).FirstOrDefault();
+            var branCarEntity = _context.Cars.Where(c => c.Id == carId)
+                                              .Select(cm => cm.CarModel)
+                                              .Select(cm => cm.BrandCar).FirstOrDefault();
 
-            //var clientBrandCar = new ClientBrandCar()
-            //{
-            //    Client = client,
-            //    BrandCar = branCarEntity
-            //};
+            var clientBrandCar = new ClientBrandCar()
+            {
+                Client = client,
+                BrandCar = branCarEntity
+            };
 
-            //_context.Add(clientBrandCar);
+            _context.Add(clientBrandCar);
             _context.Add(rentalContract);
             return Save();
         }
@@ -58,6 +57,12 @@ namespace WebApiDiplom.Repository
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool UpdadeRentalContract(int clientdId, int carId, RentalContract rentalContract)
+        {
+            _context.Update(rentalContract);
+            return Save();
         }
     }
 }

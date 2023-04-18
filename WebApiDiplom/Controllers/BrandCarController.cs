@@ -103,5 +103,42 @@ namespace WebApiDiplom.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{brandCarId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateBrandCar(int brandCarId, [FromBody] BrandCarDto updateBrandCar)
+        {
+            if (updateBrandCar == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (brandCarId != updateBrandCar.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_brandCarRepository.BrandCarExists(brandCarId))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var brandCarMap = _mapper.Map<BrandCar>(updateBrandCar);
+
+            if (!_brandCarRepository.UpdateBrandCar(brandCarMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating brand car");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

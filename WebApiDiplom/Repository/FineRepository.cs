@@ -53,5 +53,11 @@ namespace WebApiDiplom.Repository
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdateFine(Fine fine)
+        {
+            _context.Update(fine);
+            return Save();
+        }
     }
 }

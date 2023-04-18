@@ -10,6 +10,7 @@ namespace WebApiDiplom.Interfaces
         Client GetClientByFine(int id);
         bool FineExists(int id);
         bool CreateFine(Fine fine);
+        bool UpdateFine(Fine fine);
         bool Save();
     }
 }

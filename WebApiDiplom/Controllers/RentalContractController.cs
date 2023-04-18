@@ -112,13 +112,53 @@ namespace WebApiDiplom.Controllers
             rentalContractMap.Client = _clientRepository.GetClient(clientId);
             rentalContractMap.Employee = _employeeRepository.GetEmployee(employeeId);
 
-            if (!_rentalContractRepository.CreateRentalContract(rentalContractMap))
+            if (!_rentalContractRepository.CreateRentalContract(clientId, carId, rentalContractMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
 
             return Ok("Successfully created");
+        }
+
+        [HttpPut("{rentalContractId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateRentalContract(int rentalContractId,
+                                                  [FromQuery]int clientdId, 
+                                                  [FromQuery] int carId,
+                                                  [FromBody] RentalContractDto updateRentalContract)
+        {
+            if (updateRentalContract == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (rentalContractId != updateRentalContract.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_rentalContractRepository.RentalContractExists(rentalContractId))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var rentalContractMap = _mapper.Map<RentalContract>(updateRentalContract);
+
+            if (!_rentalContractRepository.UpdadeRentalContract(clientdId, carId, rentalContractMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating rental contract");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
         }
     }
 }

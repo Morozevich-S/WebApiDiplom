@@ -9,6 +9,7 @@ namespace WebApiDiplom.Interfaces
         ICollection<CarModel> GetCarModelByBrendCar(int id);
         bool BrandCarExists(int id);
         bool CreateBrandCar(BrandCar brandCar);
+        bool UpdateBrandCar(BrandCar brandCar);
         bool Save();
     }
 }

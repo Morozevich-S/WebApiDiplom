@@ -109,5 +109,42 @@ namespace WebApiDiplom.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{clientId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateClient(int clientId, [FromBody] ClientDto updateClient)
+        {
+            if (updateClient == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (clientId != updateClient.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_clientRepository.ClientExists(clientId))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var clientMap = _mapper.Map<Client>(updateClient);
+
+            if (!_clientRepository.UpdateClient(clientMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating client");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

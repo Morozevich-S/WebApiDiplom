@@ -10,6 +10,7 @@ namespace WebApiDiplom.Interfaces
         ICollection<RentalContract> GetRentalContractByClient(int clientId);
         bool ClientExists(int id);
         bool CreateClient(Client client);
+        bool UpdateClient(Client client);
         bool Save();
     }
 }

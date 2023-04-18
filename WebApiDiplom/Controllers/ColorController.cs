@@ -88,5 +88,42 @@ namespace WebApiDiplom.Controllers
 
             return Ok("Successfully created");
         }
+
+        [HttpPut("{colorId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateColor(int colorId, [FromBody] ColorDto updateColor)
+        {
+            if (updateColor == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (colorId != updateColor.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_colorRepository.ColorExists(colorId))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var colorMap = _mapper.Map<Color>(updateColor);
+
+            if (!_colorRepository.UpdateColor(colorMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating color");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

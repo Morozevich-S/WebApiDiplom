@@ -29,7 +29,7 @@ namespace WebApiDiplom.Repository
 
         public ICollection<CarModel> GetCarModels()
         {
-           return _context.CarModels.OrderBy(cm => cm.Id).ToList();
+            return _context.CarModels.OrderBy(cm => cm.Id).ToList();
         }
 
         public bool CarModelExists(int modelId)
@@ -47,6 +47,12 @@ namespace WebApiDiplom.Repository
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool UpdateCarModel(CarModel carModel)
+        {
+            _context.Update(carModel);
+            return Save();
         }
     }
 }
