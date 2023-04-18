@@ -9,7 +9,7 @@ namespace WebApiDiplom.Interfaces
         Client GetClient(string passport);
         ICollection<RentalContract> GetRentalContractByClient(int clientId);
         bool ClientExists(int id);
-        bool CreateClient(int brandId, Client client);
+        bool CreateClient(Client client);
         bool Save();
     }
 }

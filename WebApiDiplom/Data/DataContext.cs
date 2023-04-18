@@ -25,7 +25,7 @@ namespace WebApiDiplom.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ClientBrandCar>()
-                .HasKey(cbc => new { cbc.ClientId, cbc.BrandId });
+                .HasKey(cbc => new { cbc.ClientId, cbc.BrandCarId });
             modelBuilder.Entity<ClientBrandCar>()
                 .HasOne(c => c.Client)
                 .WithMany(cbc => cbc.ClientBrandCars)
@@ -33,7 +33,7 @@ namespace WebApiDiplom.Data
             modelBuilder.Entity<ClientBrandCar>()
              .HasOne(b => b.BrandCar)
              .WithMany(cbc => cbc.ClientBrandCars)
-             .HasForeignKey(b => b.BrandId);
+             .HasForeignKey(b => b.BrandCarId);
         }
     }
 }

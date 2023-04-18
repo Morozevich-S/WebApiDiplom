@@ -19,19 +19,9 @@ namespace WebApiDiplom.Repository
             return _context.Clients.Any(c => c.Id == id);
         }
 
-        public bool CreateClient(int brandId, Client client)
+        public bool CreateClient(Client client)
         {
-            var clientBrandCarEntity = _context.BrandCars.Where(c => c.Id == brandId).FirstOrDefault();
-
-            var clientBrandCar = new ClientBrandCar()
-            {
-                Client = client,
-                BrandCar = clientBrandCarEntity
-            };
-
-            _context.Add(clientBrandCar);
             _context.Add(client);
-
             return Save();
         }
 

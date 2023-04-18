@@ -15,7 +15,20 @@ namespace WebApiDiplom.Repository
         }
 
         public bool CreateRentalContract(RentalContract rentalContract)
+      //public bool CreateRentalContract(int clientId, int carId, RentalContract rentalContract)
         {
+            //var client = _context.Clients.Where(c => c.Id == clientId).FirstOrDefault();
+            //var branCarEntity = _context.Cars.Where(c => c.Id == carId)
+            //                                  .Select(cm => cm.CarModel)
+            //                                  .Select(cm => cm.BrandCar).FirstOrDefault();
+
+            //var clientBrandCar = new ClientBrandCar()
+            //{
+            //    Client = client,
+            //    BrandCar = branCarEntity
+            //};
+
+            //_context.Add(clientBrandCar);
             _context.Add(rentalContract);
             return Save();
         }

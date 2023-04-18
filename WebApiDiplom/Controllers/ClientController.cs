@@ -77,7 +77,7 @@ namespace WebApiDiplom.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateClient([FromQuery] int brandId, [FromBody] ClientDto clientCreate)
+        public IActionResult CreateClient([FromBody] ClientDto clientCreate)
         {
             if (clientCreate == null)
             {
@@ -101,7 +101,7 @@ namespace WebApiDiplom.Controllers
 
             var clientMap = _mapper.Map<Client>(clientCreate);
 
-            if (!_clientRepository.CreateClient(brandId, clientMap))
+            if (!_clientRepository.CreateClient(clientMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
