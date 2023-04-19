@@ -195,5 +195,30 @@ namespace WebApiDiplom.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{carId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteCar(int carId)
+        {
+            if (!_carRepository.CarExists(carId))
+            {
+                return NotFound();
+            }
+            var carToDelete = _carRepository.GetCar(carId);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_carRepository.DeleteCar(carToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting car");
+            }
+
+            return NoContent();
+        }
     }
 }

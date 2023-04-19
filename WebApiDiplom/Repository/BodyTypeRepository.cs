@@ -24,6 +24,12 @@ namespace WebApiDiplom.Repository
             return Save();
         }
 
+        public bool DeleteBodyType(BodyType bodyType)
+        {
+            _context.Remove(bodyType);
+            return Save();
+        }
+
         public BodyType GetBodyType(int id)
         {
             return _context.BodyTypes.Where(t => t.Id == id).FirstOrDefault();

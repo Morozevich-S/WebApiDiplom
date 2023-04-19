@@ -20,6 +20,12 @@ namespace WebApiDiplom.Repository
             return Save();
         }
 
+        public bool DeleteFine(Fine fine)
+        {
+            _context.Remove(fine);
+            return Save();
+        }
+
         public bool FineExists(int id)
         {
             return _context.Fines.Any(f => f.Id == id);

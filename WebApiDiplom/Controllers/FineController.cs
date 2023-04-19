@@ -170,5 +170,30 @@ namespace WebApiDiplom.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{fineId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteFine(int fineId)
+        {
+            if (!_fineRepository.FineExists(fineId))
+            {
+                return NotFound();
+            }
+            var fineToDelete = _fineRepository.GetFine(fineId);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_fineRepository.DeleteFine(fineToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting fine");
+            }
+
+            return NoContent();
+        }
     }
 }

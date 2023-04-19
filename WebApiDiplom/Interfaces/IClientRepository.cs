@@ -11,6 +11,7 @@ namespace WebApiDiplom.Interfaces
         bool ClientExists(int id);
         bool CreateClient(Client client);
         bool UpdateClient(Client client);
+        bool DeleteClient(Client client);
         bool Save();
     }
 }

@@ -32,6 +32,12 @@ namespace WebApiDiplom.Repository
             return Save();
         }
 
+        public bool DeleteRentalContract(RentalContract rentalContract)
+        {
+            _context.Remove(rentalContract);
+            return Save();
+        }
+
         public Car GetCarByRentalContract(int id)
         {
             return _context.RentalContracts.Where(c => c.Id == id)

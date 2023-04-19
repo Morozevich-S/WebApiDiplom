@@ -160,5 +160,30 @@ namespace WebApiDiplom.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{rentalContractId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteRentalContract(int rentalContractId)
+        {
+            if (!_rentalContractRepository.RentalContractExists(rentalContractId))
+            {
+                return NotFound();
+            }
+            var rentalContractToDelete = _rentalContractRepository.GetRentalContract(rentalContractId);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_rentalContractRepository.DeleteRentalContract(rentalContractToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting rental contract");
+            }
+
+            return NoContent();
+        }
     }
 }

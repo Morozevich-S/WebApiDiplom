@@ -130,17 +130,17 @@ namespace WebApiDiplom.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(bodyTypeId != updateBodyType.Id)
+            if (bodyTypeId != updateBodyType.Id)
             {
                 return BadRequest(ModelState);
             }
 
-            if(!_bodyTypeRepository.BodyTypeExists(bodyTypeId))
+            if (!_bodyTypeRepository.BodyTypeExists(bodyTypeId))
             {
                 return NotFound();
             }
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
@@ -155,5 +155,31 @@ namespace WebApiDiplom.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{bodyTypeId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteBodyType(int bodyTypeId)
+        {
+            if (!_bodyTypeRepository.BodyTypeExists(bodyTypeId))
+            {
+                return NotFound();
+            }
+            var bodyTypeToDelete = _bodyTypeRepository.GetBodyType(bodyTypeId);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_bodyTypeRepository.DeleteBodyType(bodyTypeToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting body type");
+            }
+
+            return NoContent();
+        }
+
     }
 }

@@ -54,5 +54,11 @@ namespace WebApiDiplom.Repository
             _context.Update(carModel);
             return Save();
         }
+
+        public bool DeleteCarModel(CarModel carModel)
+        {
+            _context.Remove(carModel);
+            return Save();
+        }
     }
 }

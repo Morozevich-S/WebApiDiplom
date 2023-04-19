@@ -140,5 +140,30 @@ namespace WebApiDiplom.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{jobTitleId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteJobTitle(int jobTitleId)
+        {
+            if (!_jobTitleRepository.JobTitleExists(jobTitleId))
+            {
+                return NotFound();
+            }
+            var jobTitleToDelete = _jobTitleRepository.GetJobTitle(jobTitleId);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_jobTitleRepository.DeleteJobTitle(jobTitleToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting job title");
+            }
+
+            return NoContent();
+        }
     }
 }

@@ -125,5 +125,30 @@ namespace WebApiDiplom.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{colorId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteColor(int colorId)
+        {
+            if (!_colorRepository.ColorExists(colorId))
+            {
+                return NotFound();
+            }
+            var colorToDelete = _colorRepository.GetColor(colorId);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_colorRepository.DeleteColor(colorToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting color");
+            }
+
+            return NoContent();
+        }
     }
 }

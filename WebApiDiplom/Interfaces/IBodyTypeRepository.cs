@@ -11,6 +11,7 @@ namespace WebApiDiplom.Interfaces
         bool BodyTypeExists(int id);
         bool CreateBodyType(BodyType bodyType);
         bool UpdateBodyType(BodyType bodyType);
+        bool DeleteBodyType(BodyType bodyType);
         bool Save();
     }
 }

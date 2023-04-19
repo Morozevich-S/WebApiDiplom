@@ -10,6 +10,7 @@ namespace WebApiDiplom.Interfaces
         bool BrandCarExists(int id);
         bool CreateBrandCar(BrandCar brandCar);
         bool UpdateBrandCar(BrandCar brandCar);
+        bool DeleteBrandCar(BrandCar brandCar);
         bool Save();
     }
 }

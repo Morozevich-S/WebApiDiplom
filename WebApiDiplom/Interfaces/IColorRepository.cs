@@ -9,6 +9,7 @@ namespace WebApiDiplom.Interfaces
         bool ColorExists(int id);
         bool CreateColor(Color color);
         bool UpdateColor(Color color);
+        bool DeleteColor(Color color);
         bool Save();
     }
 }

@@ -25,6 +25,12 @@ namespace WebApiDiplom.Repository
             return Save();
         }
 
+        public bool DeleteClient(Client client)
+        {
+            _context.Remove(client);
+            return Save();
+        }
+
         public Client GetClient(int id)
         {
             return _context.Clients.Where(c => c.Id == id).FirstOrDefault();

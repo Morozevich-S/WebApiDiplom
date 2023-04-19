@@ -19,6 +19,12 @@ namespace WebApiDiplom.Repository
             return Save();
         }
 
+        public bool DeleteEmployee(Employee employee)
+        {
+            _context.Remove(employee);
+            return Save();
+        }
+
         public bool EmployeeExists(int id)
         {
             return _context.Employees.Any(e => e.Id == id);

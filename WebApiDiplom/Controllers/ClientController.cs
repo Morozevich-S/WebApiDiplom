@@ -146,5 +146,30 @@ namespace WebApiDiplom.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{clientId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteClient(int clientId)
+        {
+            if (!_clientRepository.ClientExists(clientId))
+            {
+                return NotFound();
+            }
+            var clientToDelete = _clientRepository.GetClient(clientId);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_clientRepository.DeleteClient(clientToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting client");
+            }
+
+            return NoContent();
+        }
     }
 }

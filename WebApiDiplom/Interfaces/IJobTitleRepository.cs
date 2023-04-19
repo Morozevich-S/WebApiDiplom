@@ -10,6 +10,7 @@ namespace WebApiDiplom.Interfaces
         bool JobTitleExists(int id);
         bool CreateJobTitle(JobTitle jobTitle);
         bool UpgradeJobTitle(JobTitle jobTitle);
+        bool DeleteJobTitle(JobTitle jobTitle);
         bool Save();
     }
 }

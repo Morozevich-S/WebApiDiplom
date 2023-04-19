@@ -24,6 +24,12 @@ namespace WebApiDiplom.Repository
             return Save();
         }
 
+        public bool DeleteCar(Car car)
+        {
+            _context.Remove(car);
+            return Save();
+        }
+
         public Car GetCar(int id)
         {
             return _context.Cars.Where(c => c.Id == id).FirstOrDefault();

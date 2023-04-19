@@ -11,6 +11,7 @@ namespace WebApiDiplom.Interfaces
         bool CarModelExists(int modelId);
         bool CreateCarModel(CarModel carModel);
         bool UpdateCarModel(CarModel carModel);
+        bool DeleteCarModel(CarModel carModel);
         bool Save();
     }
 }

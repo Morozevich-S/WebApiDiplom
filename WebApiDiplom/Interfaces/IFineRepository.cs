@@ -11,6 +11,7 @@ namespace WebApiDiplom.Interfaces
         bool FineExists(int id);
         bool CreateFine(Fine fine);
         bool UpdateFine(Fine fine);
+        bool DeleteFine(Fine fine);
         bool Save();
     }
 }

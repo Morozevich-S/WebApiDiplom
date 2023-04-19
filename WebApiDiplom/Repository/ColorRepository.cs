@@ -24,6 +24,12 @@ namespace WebApiDiplom.Repository
             return Save();
         }
 
+        public bool DeleteColor(Color color)
+        {
+            _context.Remove(color);
+            return Save();
+        }
+
         public Color GetColor(int id)
         {
             return _context.Colors.Where(c => c.Id == id).FirstOrDefault();

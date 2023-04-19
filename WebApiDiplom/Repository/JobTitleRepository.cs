@@ -19,6 +19,12 @@ namespace WebApiDiplom.Repository
             return Save();
         }
 
+        public bool DeleteJobTitle(JobTitle jobTitle)
+        {
+            _context.Remove(jobTitle);
+            return Save();
+        }
+
         public ICollection<Employee> GetEmployeeByJobTitle(int jobTitleId)
         {
             return _context.Employees.Where(e => e.JobTitle.Id == jobTitleId).ToList();
