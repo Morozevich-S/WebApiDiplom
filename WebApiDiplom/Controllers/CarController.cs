@@ -29,7 +29,7 @@ namespace WebApiDiplom.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Car>))]
-        public IActionResult GetCarModels()
+        public IActionResult GetCars()
         {
             var cars = _mapper.Map<List<CarDto>>(_carRepository.GetCars());
 

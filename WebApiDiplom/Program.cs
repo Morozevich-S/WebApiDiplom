@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using WebApiDiplom.Data;
+using WebApiDiplom.Extensions;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Repository;
+using WebApiDiplom.Services;
 
 namespace WebApiDiplom
 {
@@ -12,6 +14,8 @@ namespace WebApiDiplom
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddIdentityServices(builder.Configuration);
+            builder.Services.AddScoped<TokenService>();
 
             builder.Services.AddControllers();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -48,6 +52,7 @@ namespace WebApiDiplom
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
