@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WebApiDiplom.Data;
 using WebApiDiplom.Extensions;
 using WebApiDiplom.Interfaces;
@@ -15,7 +18,8 @@ namespace WebApiDiplom
 
             // Add services to the container.
             builder.Services.AddIdentityServices(builder.Configuration);
-            builder.Services.AddScoped<TokenService>();
+            builder.Services.AddCors();
+            builder.Services.AddScoped<ITokenService, TokenService>();
 
             builder.Services.AddControllers();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -54,7 +58,6 @@ namespace WebApiDiplom
 
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

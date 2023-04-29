@@ -2,10 +2,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WebApiDiplom.Interfaces;
+using WebApiDiplom.Models;
 
 namespace WebApiDiplom.Services
 {
-    public class TokenService
+    public class TokenService : ITokenService
     {
         private readonly SymmetricSecurityKey _key;
 
@@ -14,11 +16,11 @@ namespace WebApiDiplom.Services
             _key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(configuration["TokenSingKey"]));
         }
-        public string CreateToken(string username)
+        public string CreateToken(Client client)
         {
             var claims = new List<Claim>()
             {
-                new (JwtRegisteredClaimNames.NameId, username)
+                new (JwtRegisteredClaimNames.NameId, client.Phone)
             };
 
             var creds = new SigningCredentials(_key,

@@ -16,5 +16,6 @@
         /// </summary>
         public int Fines { get; set; }
         public string Phone { get; set; }
+        public string Token { get; set; }
     }
 }
