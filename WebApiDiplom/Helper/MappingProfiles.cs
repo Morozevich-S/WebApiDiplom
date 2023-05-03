@@ -28,6 +28,9 @@ namespace WebApiDiplom.Helper
             CreateMap<JobTitleDto, JobTitle>();
             CreateMap<RentalContract, RentalContractDto>();
             CreateMap<RentalContractDto, RentalContract>();
+            CreateMap<AppUser, UserDto>();
+            CreateMap<UserDto, AppUser>();
+            CreateMap<RegisterDto, AppUser>();
         }
     }
 }

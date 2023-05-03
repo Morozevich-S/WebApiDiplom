@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WebApiDiplom.Models;
 
 namespace WebApiDiplom.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<AppUser, AppRole, int,
+                               IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
+                               IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) 
         {
@@ -21,9 +25,25 @@ namespace WebApiDiplom.Data
         public DbSet<Fine> Fines { get; set; }
         public DbSet<JobTitle> JobTitles { get; set; }
         public DbSet<CarModel> CarModels { get; set; }
+        public DbSet<AppUser> Users { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<AppUser>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.User)
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
+
+            modelBuilder.Entity<AppRole>()
+                .HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.Role)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
+
             modelBuilder.Entity<ClientBrandCar>()
                 .HasKey(cbc => new { cbc.ClientId, cbc.BrandCarId });
             modelBuilder.Entity<ClientBrandCar>()

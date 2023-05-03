@@ -4,6 +4,6 @@ namespace WebApiDiplom.Interfaces
 {
     public interface ITokenService
     {
-        string CreateToken(Client client);
+        Task<string> CreateToken(AppUser user);
     }
 }
