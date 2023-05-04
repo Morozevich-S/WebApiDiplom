@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using WebApiDiplom.Data;
 using WebApiDiplom.Extensions;
+using WebApiDiplom.Filters;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
 using WebApiDiplom.Repository;
@@ -24,7 +25,10 @@ namespace WebApiDiplom
             builder.Services.AddCors();
             builder.Services.AddScoped<ITokenService, TokenService>();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(InitializeClientActionFilter));
+            });
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IBodyTypeRepository, BodyTypeRepository>();
             builder.Services.AddScoped<IBrandCarRepository, BrandCarRepository>();
