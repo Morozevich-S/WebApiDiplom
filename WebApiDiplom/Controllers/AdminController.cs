@@ -6,16 +6,18 @@ using WebApiDiplom.Models;
 
 namespace WebApiDiplom.Controllers
 {
+
+    [Authorize(Policy = "RequireAdminRole")]
     public class AdminController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+
 
         public AdminController(UserManager<AppUser> userManager)
         {
             _userManager = userManager;
         }
 
-        [Authorize(Policy = "RequireAdminRole")]
         [HttpGet("users-with-roles")]
         public async Task<ActionResult> GetUsersWithRoles()
         {
@@ -32,7 +34,6 @@ namespace WebApiDiplom.Controllers
             return Ok(users);
         }
 
-        [Authorize(Policy = "RequireAdminRole")]
         [HttpPost("edit-roles/{username}")]
         public async Task<ActionResult> EditRoles(string username, [FromQuery] string roles)
         {
@@ -43,7 +44,7 @@ namespace WebApiDiplom.Controllers
 
             var selectedRoles = roles.Split(",").ToArray();
 
-            var user = await _userManager.FindByIdAsync(username);
+            var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
             {
@@ -67,6 +68,29 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(await _userManager.GetRolesAsync(user));
+        }
+
+        [HttpDelete("{userId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            if (!_userManager.Users.Any(u => u.Id == userId))
+            {
+                return NotFound();
+            }
+
+            var userToDelete = _userManager.Users.Where(u => u.Id == userId).FirstOrDefault();
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _userManager.DeleteAsync(userToDelete);
+
+            return NoContent();
         }
     }
 }
