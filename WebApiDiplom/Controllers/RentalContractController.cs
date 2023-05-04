@@ -9,9 +9,7 @@ using WebApiDiplom.Repository;
 namespace WebApiDiplom.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RentalContractController : Controller
+    public class RentalContractController : BaseApiController
     {
         private readonly ICarRepository _carRepository;
         private readonly IClientRepository _clientRepository;
@@ -112,7 +110,7 @@ namespace WebApiDiplom.Controllers
 
             rentalContractMap.Car = _carRepository.GetCar(carId);
             rentalContractMap.Client = _clientRepository.GetClient(clientId);
-            rentalContractMap.Employee = _employeeRepository.GetEmployee(employeeId);
+            rentalContractMap.Employee = CurrentEmployee;
 
             if (!_rentalContractRepository.CreateRentalContract(clientId, carId, rentalContractMap))
             {

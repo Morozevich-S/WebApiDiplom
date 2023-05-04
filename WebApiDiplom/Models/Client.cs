@@ -18,9 +18,9 @@ namespace WebApiDiplom.Models
         /// </summary>
         public int Fines { get; set; }
         public string Phone { get; set; }
-        //public int AppUserId { get; set; }
+        public int UserId { get; set; }
         public ICollection<RentalContract> RentalContracts { get; set; }
         public ICollection<ClientBrandCar> ClientBrandCars { get; set; }
-        //public AppUser User { get; set; }
+        public AppUser User { get; set; }
     }
 }

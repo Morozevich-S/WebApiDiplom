@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
@@ -120,6 +121,7 @@ namespace WebApiDiplom.Controllers
             return Ok(color);
         }
 
+        [Authorize(Roles = "Employee")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -159,6 +161,7 @@ namespace WebApiDiplom.Controllers
             return Ok("Successfully created");
         }
 
+        [Authorize(Roles = "Employee")]
         [HttpPut("{carId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

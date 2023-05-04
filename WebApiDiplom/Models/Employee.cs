@@ -10,5 +10,8 @@
         public string Phone { get; set; }
         public JobTitle JobTitle { get; set; }
         public ICollection<RentalContract> RentalContracts { get; set; }
+
+        public int UserId { get; set; }
+        public AppUser User { get; set; }
     }
 }

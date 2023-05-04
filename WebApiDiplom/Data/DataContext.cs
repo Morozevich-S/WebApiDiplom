@@ -10,9 +10,7 @@ namespace WebApiDiplom.Data
                                IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) 
-        {
-
-        }
+        { }
 
         public DbSet<BodyType> BodyTypes { get; set; }
         public DbSet<BrandCar>  BrandCars { get; set; }
@@ -54,6 +52,10 @@ namespace WebApiDiplom.Data
              .HasOne(b => b.BrandCar)
              .WithMany(cbc => cbc.ClientBrandCars)
              .HasForeignKey(b => b.BrandCarId);
+
+            modelBuilder.Entity<Client>()
+                .HasIndex(c => c.UserId)
+                .IsUnique();
         }
     }
 }
