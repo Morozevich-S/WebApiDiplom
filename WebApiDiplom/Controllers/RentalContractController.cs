@@ -8,10 +8,8 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RentalContractController : Controller
+    [Authorize(Roles = "Admin,Employee")]
+    public class RentalContractController : BaseApiController
     {
         private readonly ICarRepository _carRepository;
         private readonly IClientRepository _clientRepository;

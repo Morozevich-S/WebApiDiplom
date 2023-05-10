@@ -12,7 +12,6 @@ namespace WebApiDiplom.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
 
-
         public AdminController(UserManager<AppUser> userManager)
         {
             _userManager = userManager;
@@ -81,7 +80,7 @@ namespace WebApiDiplom.Controllers
                 return NotFound();
             }
 
-            var userToDelete = _userManager.Users.Where(u => u.Id == userId).FirstOrDefault();
+            var userToDelete = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (!ModelState.IsValid)
             {

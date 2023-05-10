@@ -1,4 +1,5 @@
 ﻿using WebApiDiplom.Data;
+using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
 
@@ -45,6 +46,33 @@ namespace WebApiDiplom.Repository
             return _context.Cars.Where(c => c.Color.Id == colorId).ToList();
         }
 
+        public CarDetailDto GetCarDetail(int id)
+        {
+            var result = from c in _context.Cars
+                         join m in _context.CarModels
+                         on c.CarModelId equals m.Id
+                         join b in _context.BrandCars
+                         on m.BrandCarId equals b.Id
+                         join t in _context.BodyTypes
+                         on m.BodyTypeId equals t.Id
+                         join cl in _context.Colors
+                         on c.ColorId equals cl.Id
+                         where c.Id == id
+                         select new CarDetailDto
+                         {
+                             Id = c.Id,
+                             BrandCarName = b.Name,
+                             CarModelName = m.Name,
+                             ColorName = cl.ColorName,
+                             Capacity = m.Capacity,
+                             Mileage = c.Mileage,
+                             YearOfIssue = c.YearOfIssue,
+                             BodyTypeName = t.Type,
+                             Rented = c.Rented
+                         };
+            return result.FirstOrDefault();
+        }
+
         public CarModel GetCarModelByCar(int id)
         {
             return _context.Cars.Where(c => c.Id == id).
@@ -60,6 +88,33 @@ namespace WebApiDiplom.Repository
         {
             return _context.Cars.Where(c => c.Id == id).
                Select(c => c.Color).FirstOrDefault();
+        }
+
+        public ICollection<CarDetailDto> GetNonRentedCarsDetail()
+        {
+            var result = from c in _context.Cars
+                         join m in _context.CarModels
+                         on c.CarModelId equals m.Id
+                         join b in _context.BrandCars
+                         on m.BrandCarId equals b.Id
+                         join t in _context.BodyTypes
+                         on m.BodyTypeId equals t.Id
+                         join cl in _context.Colors
+                         on c.ColorId equals cl.Id
+                         where c.Rented == false
+                         select new CarDetailDto
+                         {
+                             Id = c.Id,
+                             BrandCarName = b.Name,
+                             CarModelName = m.Name,
+                             ColorName = cl.ColorName,
+                             Capacity = m.Capacity,
+                             Mileage = c.Mileage,
+                             YearOfIssue = c.YearOfIssue,
+                             BodyTypeName = t.Type,
+                             Rented = c.Rented
+                         };
+            return result.ToList();
         }
 
         public bool Save()

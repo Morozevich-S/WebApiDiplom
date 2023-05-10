@@ -25,18 +25,24 @@ namespace WebApiDiplom
                         {
                             Client = new Client()
                             {
-                                Name = "Elena",
-                                Surname = "Ivanova",
-                                Passport = "MC1234567",
-                                Phone = "+375295556688",
-                                DrivingExperience = 5
+                                DrivingExperience = 5,
+                                User = new AppUser()
+                                {
+                                    Name = "Elena",
+                                    Surname = "Ivanova",
+                                    Passport = "MC1234567",
+                                    Phone = "+375295556688"
+                                }
                             },
                             Employee = new Employee()
                             {
-                                Name = "Jack",
-                                Surname = "Smith",
-                                Phone = "+375443332211",
-                                Passport = "MP2713355",
+                                User = new AppUser()
+                                {
+                                    Name = "Jack",
+                                    Surname = "Smith",
+                                    Phone = "+375443332211",
+                                    Passport = "MP2713355"
+                                 },
                                 JobTitle = new JobTitle()
                                 {
                                     Title = "junior manager",
@@ -92,18 +98,25 @@ namespace WebApiDiplom
                         {
                             Client = new Client()
                             {
-                                Name = "Vasilii",
-                                Surname = "Petrov",
-                                Passport = "MA7654321",
-                                Phone = "+375297775585",
-                                DrivingExperience = 3
+                                DrivingExperience = 3,
+                                User = new AppUser()
+                                {
+                                    Name = "Vasilii",
+                                    Surname = "Petrov",
+                                    Passport = "MA7654321",
+                                    Phone = "+375297775585"
+                                }
                             },
                             Employee = new Employee()
                             {
-                                Name = "Peter",
-                                Surname = "Wiliams",
-                                Phone = "+37544336643",
-                                Passport = "Mk9654361",
+                                User = new AppUser()
+                                {
+                                    Name = "Peter",
+                                    Surname = "Wiliams",
+                                    Phone = "+37544336643",
+                                    Passport = "Mk9654361",
+
+                                },
                                 JobTitle = new JobTitle()
                                 {
                                     Title = "middle manager",
@@ -147,18 +160,24 @@ namespace WebApiDiplom
                         {
                             Client = new Client()
                             {
-                                Name = "Leonid",
-                                Surname = "Zamorskii",
-                                Passport = "MA1654386",
-                                Phone = "+375291548743",
-                                DrivingExperience = 13
+                                DrivingExperience = 13,
+                                User = new AppUser()
+                                {
+                                    Name = "Leonid",
+                                    Surname = "Zamorskii",
+                                    Passport = "MA1654386",
+                                    Phone = "+375291548743"
+                                }
                             },
                             Employee = new Employee()
                             {
-                                Name = "Adam",
-                                Surname = "Rouding",
-                                Phone = "+375337649856",
-                                Passport = "MB8745071",
+                                User = new AppUser() 
+                                { 
+                                    Name = "Adam", 
+                                    Surname = "Rouding", 
+                                    Phone = "+375337649856", 
+                                    Passport = "MB8745071"
+                                },
                                 JobTitle = new JobTitle()
                                 {
                                     Title = "senior manager",

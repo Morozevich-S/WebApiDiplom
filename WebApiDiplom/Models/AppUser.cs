@@ -9,7 +9,7 @@ namespace WebApiDiplom.Models
         public string Passport { get; set; }
         public string Phone { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
-        //public ICollection<Client> Clients { get; set; }
-        //public ICollection<Employee> Employees { get; set; }
+        public ICollection<Client> Clients { get; set; }
+        public ICollection<Employee> Employees { get; set; }
     }
 }

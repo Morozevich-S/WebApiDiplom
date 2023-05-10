@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
@@ -7,9 +8,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CarController : Controller
+    public class CarController : BaseApiController
     {
         private readonly ICarRepository _carRepository;
         private readonly ICarModelRepository _carModelRepository;
@@ -58,6 +57,41 @@ namespace WebApiDiplom.Controllers
             }
 
             return Ok(car);
+        }
+
+        [HttpGet("{carId}/carDetail")]
+        [ProducesResponseType(200, Type = typeof(CarDetailDto))]
+        [ProducesResponseType(400)]
+        public IActionResult GetCarDetail(int carId)
+        {
+            if (!_carRepository.CarExists(carId))
+            {
+                return NotFound();
+            }
+
+            var carDetail = _carRepository.GetCarDetail(carId);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(carDetail);
+        }
+
+        [HttpGet("/nonRentedCars")]
+        [ProducesResponseType(200, Type = typeof(List<CarDetailDto>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetNonRentedCarsDetail()
+        {
+            var carDetailList = _carRepository.GetNonRentedCarsDetail();
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(carDetailList);
         }
 
         [HttpGet("/api/CarModel/{carModelId}/cars")]
@@ -120,6 +154,7 @@ namespace WebApiDiplom.Controllers
             return Ok(color);
         }
 
+        [Authorize(Roles = "Employee")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -159,6 +194,7 @@ namespace WebApiDiplom.Controllers
             return Ok("Successfully created");
         }
 
+        [Authorize(Roles = "Employee")]
         [HttpPut("{carId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -196,6 +232,7 @@ namespace WebApiDiplom.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Employee")]
         [HttpDelete("{carId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

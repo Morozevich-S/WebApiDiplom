@@ -8,7 +8,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Employee")]
     [Route("api/[controller]")]
     [ApiController]
     public class JodTitleController : Controller

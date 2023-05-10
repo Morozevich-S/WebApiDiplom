@@ -253,7 +253,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BodyTypes");
+                    b.ToTable("BodyTypes", (string)null);
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.BrandCar", b =>
@@ -270,7 +270,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BrandCars");
+                    b.ToTable("BrandCars", (string)null);
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Car", b =>
@@ -302,7 +302,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasIndex("ColorId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.CarModel", b =>
@@ -332,7 +332,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasIndex("BrandCarId");
 
-                    b.ToTable("CarModels");
+                    b.ToTable("CarModels", (string)null);
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Client", b =>
@@ -370,7 +370,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.ClientBrandCar", b =>
@@ -385,7 +385,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasIndex("BrandCarId");
 
-                    b.ToTable("ClientBrandCars");
+                    b.ToTable("ClientBrandCars", (string)null);
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Color", b =>
@@ -402,7 +402,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colors");
+                    b.ToTable("Colors", (string)null);
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Employee", b =>
@@ -436,7 +436,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasIndex("JobTitleId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Fine", b =>
@@ -464,7 +464,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasIndex("RentalContractId");
 
-                    b.ToTable("Fines");
+                    b.ToTable("Fines", (string)null);
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.JobTitle", b =>
@@ -484,7 +484,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobTitles");
+                    b.ToTable("JobTitles", (string)null);
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.RentalContract", b =>
@@ -521,7 +521,7 @@ namespace WebApiDiplom.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("RentalContracts");
+                    b.ToTable("RentalContracts", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

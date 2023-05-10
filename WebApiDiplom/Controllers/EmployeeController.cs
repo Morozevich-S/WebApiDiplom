@@ -8,7 +8,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Employee")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : Controller
@@ -104,7 +104,7 @@ namespace WebApiDiplom.Controllers
             }
 
             var employee = _employeeRepository.GetEmployees()
-                .Where(e => e.Surname.Trim().ToUpper() == employeeCreate.Surname.Trim().ToUpper())
+                .Where(e => e.User.Surname.Trim().ToUpper() == employeeCreate.Surname.Trim().ToUpper())
                 .FirstOrDefault();
 
             if (employee != null)

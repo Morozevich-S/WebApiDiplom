@@ -38,7 +38,7 @@ namespace WebApiDiplom.Repository
 
         public Client GetClient(string passport)
         {
-            return _context.Clients.Where(c => c.Passport == passport).FirstOrDefault();
+            return _context.Clients.Where(c => c.User.Passport == passport).FirstOrDefault();
         }
 
         public ICollection<Client> GetClients()

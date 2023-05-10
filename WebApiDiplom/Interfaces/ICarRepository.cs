@@ -1,4 +1,5 @@
-﻿using WebApiDiplom.Models;
+﻿using WebApiDiplom.Dto;
+using WebApiDiplom.Models;
 
 namespace WebApiDiplom.Interfaces
 {
@@ -10,6 +11,8 @@ namespace WebApiDiplom.Interfaces
         ICollection<Car> GetCarByCarModel(int carModelId);
         Color GetColorByCar(int id);
         CarModel GetCarModelByCar(int id);
+        CarDetailDto GetCarDetail(int id);
+        ICollection<CarDetailDto> GetNonRentedCarsDetail();
         bool CarExists(int id);
         bool CreateCar(Car car);
         bool UpdateCar(Car car);

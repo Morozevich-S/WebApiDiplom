@@ -8,7 +8,6 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Authorize(Roles = "Client")]
     [Route("api/[controller]")]
     [ApiController]
     public class ColorController : Controller

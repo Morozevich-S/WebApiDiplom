@@ -8,7 +8,6 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ClientController : Controller
@@ -87,7 +86,7 @@ namespace WebApiDiplom.Controllers
             }
 
             var client = _clientRepository.GetClients()
-                .Where(c => c.Surname.Trim().ToUpper() == clientCreate.Surname.Trim().ToUpper())
+                .Where(c => c.User.Surname.Trim().ToUpper() == clientCreate.Surname.Trim().ToUpper())
                 .FirstOrDefault();
 
             if (client != null)

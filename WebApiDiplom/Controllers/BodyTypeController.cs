@@ -7,9 +7,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BodyTypeController : Controller
+    public class BodyTypeController : BaseApiController
     {
         private readonly IBodyTypeRepository _bodyTypeRepository;
         private readonly IMapper _mapper;
@@ -180,6 +178,5 @@ namespace WebApiDiplom.Controllers
 
             return NoContent();
         }
-
     }
 }
