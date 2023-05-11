@@ -49,16 +49,38 @@ namespace WebApiDiplom.Data
                 .WithMany(cbc => cbc.ClientBrandCars)
                 .HasForeignKey(c => c.ClientId);
             modelBuilder.Entity<ClientBrandCar>()
-             .HasOne(b => b.BrandCar)
-             .WithMany(cbc => cbc.ClientBrandCars)
-             .HasForeignKey(b => b.BrandCarId);
+                .HasOne(b => b.BrandCar)
+                .WithMany(cbc => cbc.ClientBrandCars)
+                .HasForeignKey(b => b.BrandCarId);
 
             modelBuilder.Entity<Client>()
                 .HasIndex(c => c.UserId)
                 .IsUnique();
-            //modelBuilder.Entity<Employee>()
-            //    .HasIndex(e => e.UserId)
-            //    .IsUnique();
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e => e.UserId)
+                .IsUnique();
+
+            modelBuilder.Entity<RentalContract>()
+                .HasOne(c => c.Employee)
+                .WithMany(e => e.RentalContracts)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<RentalContract>()
+               .HasOne(c => c.Client)
+               .WithMany(c => c.RentalContracts)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<RentalContract>()
+                .Property(rc => rc.Price)
+                .HasPrecision(6, 2);
+
+            modelBuilder.Entity<Fine>()
+                .Property(f => f.Amount)
+                .HasPrecision(7, 2);
+
+            modelBuilder.Entity<Car>()
+                .Property(c => c.Rate)
+                .HasPrecision(6, 2);
         }
     }
 }

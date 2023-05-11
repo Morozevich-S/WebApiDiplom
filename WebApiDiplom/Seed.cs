@@ -236,7 +236,11 @@ namespace WebApiDiplom
 
             var userAdmin = new AppUser
             {
-                UserName = "admin"
+                UserName = "admin",
+                Name = "admin",
+                Surname = "admin",
+                Phone = "admin",
+                Passport = "admin",
             };
 
             var userClient = new AppUser

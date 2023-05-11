@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using WebApiDiplom.Data;
+using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
 
@@ -33,7 +35,8 @@ namespace WebApiDiplom.Repository
 
         public Client GetClient(int id)
         {
-            return _context.Clients.Where(c => c.Id == id).FirstOrDefault();
+
+            return _context.Clients.Include(c =>c.User).Where(c => c.Id == id).FirstOrDefault();
         }
 
         public Client GetClient(string passport)

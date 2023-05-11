@@ -7,7 +7,7 @@
         public int CarId { get; set; }
         public DateTime Date { get; set; }
         public int RentalDuration { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
         public Client Client { get; set; }

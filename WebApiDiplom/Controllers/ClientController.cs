@@ -86,7 +86,7 @@ namespace WebApiDiplom.Controllers
             }
 
             var client = _clientRepository.GetClients()
-                .Where(c => c.User.Surname.Trim().ToUpper() == clientCreate.Surname.Trim().ToUpper())
+                .Where(c => c.User.Surname.Trim().ToUpper() == clientCreate.User.Surname.Trim().ToUpper())
                 .FirstOrDefault();
 
             if (client != null)

@@ -1,4 +1,5 @@
-﻿using WebApiDiplom.Models;
+﻿using WebApiDiplom.Dto;
+using WebApiDiplom.Models;
 
 namespace WebApiDiplom.Interfaces
 {

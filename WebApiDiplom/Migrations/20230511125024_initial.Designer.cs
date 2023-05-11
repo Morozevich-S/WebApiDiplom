@@ -12,8 +12,8 @@ using WebApiDiplom.Data;
 namespace WebApiDiplom.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230504112411_add-role")]
-    partial class addrole
+    [Migration("20230511125024_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -292,6 +292,10 @@ namespace WebApiDiplom.Migrations
                     b.Property<int>("Mileage")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Rate")
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
+
                     b.Property<bool>("Rented")
                         .HasColumnType("bit");
 
@@ -351,26 +355,16 @@ namespace WebApiDiplom.Migrations
                     b.Property<int>("Fines")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Passport")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Clients");
                 });
@@ -418,25 +412,15 @@ namespace WebApiDiplom.Migrations
                     b.Property<int>("JobTitleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Passport")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("JobTitleId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Employees");
                 });
@@ -449,8 +433,9 @@ namespace WebApiDiplom.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(7, 2)
+                        .HasColumnType("decimal(7,2)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -509,8 +494,9 @@ namespace WebApiDiplom.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Price")
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
 
                     b.Property<int>("RentalDuration")
                         .HasColumnType("int");
@@ -619,6 +605,17 @@ namespace WebApiDiplom.Migrations
                     b.Navigation("BrandCar");
                 });
 
+            modelBuilder.Entity("WebApiDiplom.Models.Client", b =>
+                {
+                    b.HasOne("WebApiDiplom.Models.AppUser", "User")
+                        .WithMany("Clients")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WebApiDiplom.Models.ClientBrandCar", b =>
                 {
                     b.HasOne("WebApiDiplom.Models.BrandCar", "BrandCar")
@@ -646,7 +643,15 @@ namespace WebApiDiplom.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WebApiDiplom.Models.AppUser", "User")
+                        .WithMany("Employees")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("JobTitle");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WebApiDiplom.Models.Fine", b =>
@@ -671,13 +676,13 @@ namespace WebApiDiplom.Migrations
                     b.HasOne("WebApiDiplom.Models.Client", "Client")
                         .WithMany("RentalContracts")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WebApiDiplom.Models.Employee", "Employee")
                         .WithMany("RentalContracts")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Car");
@@ -694,6 +699,10 @@ namespace WebApiDiplom.Migrations
 
             modelBuilder.Entity("WebApiDiplom.Models.AppUser", b =>
                 {
+                    b.Navigation("Clients");
+
+                    b.Navigation("Employees");
+
                     b.Navigation("UserRoles");
                 });
 

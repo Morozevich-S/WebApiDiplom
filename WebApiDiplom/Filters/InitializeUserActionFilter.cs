@@ -20,6 +20,12 @@ namespace WebApiDiplom.Filters
         {
             var controller = (BaseApiController)context.Controller;
 
+            if (context.HttpContext.User.FindFirst(JwtRegisteredClaimNames.NameId)?.Value == null)
+            {
+                await next?.Invoke();
+                return;
+            }
+
             var userId = int.Parse(context.HttpContext.User.FindFirst(JwtRegisteredClaimNames.NameId)?.Value);
 
             var client = await _context.Clients.FirstOrDefaultAsync(c => c.UserId == userId);
@@ -27,6 +33,8 @@ namespace WebApiDiplom.Filters
 
             controller.CurrentClient = client;
             controller.CurrentEmployee = employee;
+
+            await next?.Invoke();
         }
     }
 }

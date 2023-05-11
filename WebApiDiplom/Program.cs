@@ -25,10 +25,11 @@ namespace WebApiDiplom
             builder.Services.AddCors();
             builder.Services.AddScoped<ITokenService, TokenService>();
 
-            builder.Services.AddControllers(options =>
-            {
-                options.Filters.Add(typeof(InitializeUserActionFilter));
-            });
+            builder.Services.AddControllers();
+            //builder.Services.AddControllers(options =>
+            //{
+            //    options.Filters.Add(typeof(InitializeUserActionFilter));
+            //});
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IBodyTypeRepository, BodyTypeRepository>();
             builder.Services.AddScoped<IBrandCarRepository, BrandCarRepository>();
