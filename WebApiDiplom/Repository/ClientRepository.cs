@@ -23,7 +23,7 @@ namespace WebApiDiplom.Repository
 
         public bool CreateClient(Client client)
         {
-            _context.Add(client);
+            _context.Clients.Add(client);
             return Save();
         }
 
@@ -35,8 +35,7 @@ namespace WebApiDiplom.Repository
 
         public Client GetClient(int id)
         {
-
-            return _context.Clients.Include(c =>c.User).Where(c => c.Id == id).FirstOrDefault();
+           return _context.Clients.Include(c => c.User).FirstOrDefault(c => c.Id == id);
         }
 
         public Client GetClient(string passport)
@@ -62,8 +61,37 @@ namespace WebApiDiplom.Repository
 
         public bool UpdateClient(Client client)
         {
-           _context.Update(client);
+            _context.Update(client);
             return Save();
+        }
+
+        public Client UpdateRatingAndFines(Client client)
+        {
+            client.Fines = _context.RentalContracts.Where(r => r.ClientId == client.Id)
+                .Select(r => r.Fines).Count();
+            if (client.Fines == 0)
+            {
+                client.Rating = client.DrivingExperience;
+            }
+            else
+            {
+                client.Rating = (double)client.DrivingExperience / client.Fines;
+            }
+            UpdateClient(client);
+            return client;
+        }
+
+        public IEnumerable<Client> GetClientsByRating()
+        {
+            var clients = GetClients();
+            var clientUpdate = new List<Client>();
+
+            foreach (var client in clients) 
+            {
+              clientUpdate.Add(UpdateRatingAndFines(client));
+            }
+
+            return clientUpdate.OrderBy(c => c.Rating);
         }
     }
 }

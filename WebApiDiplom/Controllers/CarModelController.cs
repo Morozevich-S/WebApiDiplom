@@ -7,9 +7,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CarModelController : Controller
+    public class CarModelController : BaseApiController
     {
         private readonly IBodyTypeRepository _bodyTypeRepository;
         private readonly IBrandCarRepository _brandCarRepository;
@@ -48,7 +46,7 @@ namespace WebApiDiplom.Controllers
                 return NotFound();
             }
 
-            var carModel =  _mapper.Map<CarModelDto>(_carModelRepository.GetCarModel(carModelId));
+            var carModel = _mapper.Map<CarModelDto>(_carModelRepository.GetCarModel(carModelId));
 
             if (!ModelState.IsValid)
             {

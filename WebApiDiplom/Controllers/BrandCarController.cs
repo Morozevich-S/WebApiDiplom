@@ -7,9 +7,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BrandCarController : Controller
+    public class BrandCarController : BaseApiController
     {
         private readonly IBrandCarRepository _brandCarRepository;
         private readonly IMapper _mapper;

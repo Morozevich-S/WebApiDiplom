@@ -9,16 +9,19 @@ namespace WebApiDiplom
 {
     public static class Seed
     {
-        public static void SeedDataContext(this IServiceProvider services)
+        public static async Task SeedDataContext(this IServiceProvider services)
         {
             using (var scope = services.CreateScope())
             {
                 var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                //var context = services.GetRequiredService<DataContext>();
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
 
-                dataContext.Database.Migrate();
+                dataContext.Database.MigrateAsync();
 
-                if (!dataContext.RentalContracts.Any())
-                {
+                //if (!dataContext.RentalContracts.Any())
+                //{
                     var contracts = new List<RentalContract>()
                     {
                         new RentalContract()
@@ -28,6 +31,7 @@ namespace WebApiDiplom
                                 DrivingExperience = 5,
                                 User = new AppUser()
                                 {
+                                    UserName = "Ivanova",
                                     Name = "Elena",
                                     Surname = "Ivanova",
                                     Passport = "MC1234567",
@@ -38,6 +42,7 @@ namespace WebApiDiplom
                             {
                                 User = new AppUser()
                                 {
+                                    UserName = "Smith",
                                     Name = "Jack",
                                     Surname = "Smith",
                                     Phone = "+375443332211",
@@ -101,6 +106,7 @@ namespace WebApiDiplom
                                 DrivingExperience = 3,
                                 User = new AppUser()
                                 {
+                                    UserName = "Petrov",
                                     Name = "Vasilii",
                                     Surname = "Petrov",
                                     Passport = "MA7654321",
@@ -111,6 +117,7 @@ namespace WebApiDiplom
                             {
                                 User = new AppUser()
                                 {
+                                    UserName = "Wiliams",
                                     Name = "Peter",
                                     Surname = "Wiliams",
                                     Phone = "+37544336643",
@@ -163,6 +170,7 @@ namespace WebApiDiplom
                                 DrivingExperience = 13,
                                 User = new AppUser()
                                 {
+                                    UserName = "Zamorskii",
                                     Name = "Leonid",
                                     Surname = "Zamorskii",
                                     Passport = "MA1654386",
@@ -171,11 +179,12 @@ namespace WebApiDiplom
                             },
                             Employee = new Employee()
                             {
-                                User = new AppUser() 
-                                { 
-                                    Name = "Adam", 
-                                    Surname = "Rouding", 
-                                    Phone = "+375337649856", 
+                                User = new AppUser()
+                                {
+                                    UserName = "Rouding",
+                                    Name = "Adam",
+                                    Surname = "Rouding",
+                                    Phone = "+375337649856",
                                     Passport = "MB8745071"
                                 },
                                 JobTitle = new JobTitle()
@@ -209,65 +218,120 @@ namespace WebApiDiplom
                             RentalDuration = 10,
                         }
                     };
+
+                    var roles = new List<AppRole>
+                        {
+                            new AppRole{Name = "Client"},
+                            new AppRole{Name = "Employee"},
+                            new AppRole{Name = "Admin"}
+                        };
+
+                    foreach (var role in roles)
+                        {
+                            await roleManager.CreateAsync(role);
+                        }
+
+                    var userAdmin = new AppUser
+                        {
+                            UserName = "admin",
+                            Name = "admin",
+                            Surname = "admin",
+                            Phone = "admin",
+                            Passport = "admin",
+                        };
+
+                    var userClient = new AppUser
+                        {
+                            UserName = "client",
+                            Name = "Ivan",
+                            Surname = "Berezkin",
+                            Phone = "+375297776655",
+                            Passport = "MP7776655",
+                        };
+
+                    var userEmployee = new AppUser
+                        {
+                            UserName = "employee",
+                            Name = "James",
+                            Surname = "Bond",
+                            Phone = "+375447007007",
+                            Passport = "MP7007007",
+                        };
+
+                    var users = dataContext.Users.ToList();
+
+                    foreach (var user in users)
+                    {
+                        await userManager.CreateAsync(user, "Pa$$w0rd");
+                    }
+
+                    await userManager.CreateAsync(userClient, "clientPa$$w0rd");
+                    await userManager.CreateAsync(userEmployee, "employeePa$$w0rd");
+                    await userManager.CreateAsync(userAdmin, "adminPa$$w0rd");
+
+                    await userManager.AddToRoleAsync(userClient, "Client");
+                    await userManager.AddToRoleAsync(userEmployee, "Employee");
+                    await userManager.AddToRoleAsync(userAdmin, "Admin");
+
                     dataContext.RentalContracts.AddRange(contracts);
                     dataContext.SaveChanges();
-                }
+                //}
             }
         }
-        public static async Task SeedUsers(UserManager<AppUser> userManager,
-                                           RoleManager<AppRole> roleManager)
-        {
-            if (await userManager.Users.AnyAsync())
-            {
-                return;
-            }
+        //public static async Task SeedUsers(UserManager<AppUser> userManager,
+        //                                   RoleManager<AppRole> roleManager)
+        //{
+        //    if (await userManager.Users.AnyAsync())
+        //    {
+        //        return;
+        //    }
 
-            var roles = new List<AppRole>
-            {
-                new AppRole{Name = "Client"},
-                new AppRole{Name = "Employee"},
-                new AppRole{Name = "Admin"}
-            };
+        //    var roles = new List<AppRole>
+        //    {
+        //        new AppRole{Name = "Client"},
+        //        new AppRole{Name = "Employee"},
+        //        new AppRole{Name = "Admin"}
+        //    };
 
-            foreach (var role in roles)
-            {
-                await roleManager.CreateAsync(role);
-            }
+        //    foreach (var role in roles)
+        //    {
+        //        await roleManager.CreateAsync(role);
+        //    }
 
-            var userAdmin = new AppUser
-            {
-                UserName = "admin",
-                Name = "admin",
-                Surname = "admin",
-                Phone = "admin",
-                Passport = "admin",
-            };
+        //    var userAdmin = new AppUser
+        //    {
+        //        UserName = "admin",
+        //        Name = "admin",
+        //        Surname = "admin",
+        //        Phone = "admin",
+        //        Passport = "admin",
+        //    };
 
-            var userClient = new AppUser
-            {
-                UserName = "client",
-                Name = "Ivan",
-                Surname = "Berezkin",
-                Phone = "+375297776655",
-                Passport = "MP7776655",
-            };
+        //    var userClient = new AppUser
+        //    {
+        //        UserName = "client",
+        //        Name = "Ivan",
+        //        Surname = "Berezkin",
+        //        Phone = "+375297776655",
+        //        Passport = "MP7776655",
+        //    };
 
-            var userEmployee = new AppUser
-            {
-                UserName = "employee",
-                Name = "James",
-                Surname = "Bond",
-                Phone = "+375447007007",
-                Passport = "MP7007007",
-            };
+        //    var userEmployee = new AppUser
+        //    {
+        //        UserName = "employee",
+        //        Name = "James",
+        //        Surname = "Bond",
+        //        Phone = "+375447007007",
+        //        Passport = "MP7007007",
+        //    };
 
-            await userManager.CreateAsync(userClient, "clientPa$$w0rd");
-            await userManager.CreateAsync(userEmployee, "employeePa$$w0rd");
-            await userManager.CreateAsync(userAdmin, "adminPa$$w0rd");
+        //    await userManager.CreateAsync(userClient, "clientPa$$w0rd");
+        //    await userManager.CreateAsync(userEmployee, "employeePa$$w0rd");
+        //    await userManager.CreateAsync(userAdmin, "adminPa$$w0rd");
 
-            await userManager.AddToRoleAsync(userClient, "Client");
-            await userManager.AddToRoleAsync(userEmployee, "Employee");
-            await userManager.AddToRoleAsync(userAdmin, "Admin");
-        }
+        //    await userManager.AddToRoleAsync(userClient, "Client");
+        //    await userManager.AddToRoleAsync(userEmployee, "Employee");
+        //    await userManager.AddToRoleAsync(userAdmin, "Admin");
+        //}
     }
 }

@@ -12,5 +12,6 @@
         public ICollection<RentalContract> RentalContracts { get; set; }
         public Color Color { get; set; }
         public CarModel CarModel { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

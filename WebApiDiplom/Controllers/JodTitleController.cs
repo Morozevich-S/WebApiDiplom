@@ -9,9 +9,7 @@ using WebApiDiplom.Repository;
 namespace WebApiDiplom.Controllers
 {
     [Authorize(Roles = "Admin,Employee")]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class JodTitleController : Controller
+    public class JodTitleController : BaseApiController
     {
         private readonly IJobTitleRepository _jobTitleRepository;
         private readonly IMapper _mapper;

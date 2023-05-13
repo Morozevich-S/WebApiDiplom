@@ -26,10 +26,10 @@ namespace WebApiDiplom
             builder.Services.AddScoped<ITokenService, TokenService>();
 
             builder.Services.AddControllers();
-            //builder.Services.AddControllers(options =>
-            //{
-            //    options.Filters.Add(typeof(InitializeUserActionFilter));
-            //});
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(InitializeUserActionFilter));
+            });
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<IBodyTypeRepository, BodyTypeRepository>();
             builder.Services.AddScoped<IBrandCarRepository, BrandCarRepository>();
@@ -41,6 +41,7 @@ namespace WebApiDiplom
             builder.Services.AddScoped<IFineRepository, FineRepository>();
             builder.Services.AddScoped<IJobTitleRepository, JobTitleRepository>();
             builder.Services.AddScoped<IRentalContractRepository, RentalContractRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -109,20 +110,20 @@ namespace WebApiDiplom
             app.MapControllers();
 
             using var scope = app.Services.CreateScope();
-            var services = scope.ServiceProvider;
-            try
-            {
-                var context = services.GetRequiredService<DataContext>();
-                var userManager = services.GetRequiredService<UserManager<AppUser>>();
-                var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
-                await context.Database.MigrateAsync();
-                await Seed.SeedUsers(userManager, roleManager);
-            }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occurred during migration");
-            }
+            //var services = scope.ServiceProvider;
+            //try
+            //{
+            //    var context = services.GetRequiredService<DataContext>();
+            //    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+            //    var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+            //    await context.Database.MigrateAsync();
+            //    await Seed.SeedUsers(userManager, roleManager);
+            //}
+            //catch (Exception ex)
+            //{
+            //    var logger = services.GetRequiredService<ILogger<Program>>();
+            //    logger.LogError(ex, "An error occurred during migration");
+            //}
             await app.RunAsync(); 
         }
     }

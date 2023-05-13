@@ -8,7 +8,7 @@ namespace WebApiDiplom.Controllers
 {
 
     [Authorize(Policy = "RequireAdminRole")]
-    public class AdminController : Controller
+    public class AdminController : BaseApiController
     {
         private readonly UserManager<AppUser> _userManager;
 
@@ -21,13 +21,13 @@ namespace WebApiDiplom.Controllers
         public async Task<ActionResult> GetUsersWithRoles()
         {
             var users = await _userManager.Users
-                .OrderBy(u => u.UserName)
+                .OrderBy(u => u.Id)
                 .Select(u => new
-                {
-                    u.Id,
-                    Username = u.UserName,
-                    Roles = u.UserRoles.Select(r => r.Role.Name).ToList()
-                })
+                                {
+                                    u.Id,
+                                    Username = u.UserName,
+                                    Roles = u.UserRoles.Select(r => r.Role.Name).ToList()
+                                })
                 .ToListAsync();
 
             return Ok(users);

@@ -11,5 +11,6 @@ namespace WebApiDiplom.Models
         public ICollection<AppUserRole> UserRoles { get; set; }
         public ICollection<Client> Clients { get; set; }
         public ICollection<Employee> Employees { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

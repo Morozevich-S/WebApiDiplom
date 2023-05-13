@@ -12,6 +12,6 @@
         /// The number of fines
         /// </summary>
         public int Fines { get; set; }
-        public UserDto User { get; set; }
+        public int UserId { get; set; }
     }
 }

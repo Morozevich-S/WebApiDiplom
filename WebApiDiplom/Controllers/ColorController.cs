@@ -8,9 +8,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ColorController : Controller
+    public class ColorController : BaseApiController
     {
         private readonly IColorRepository _colorRepository;
         private readonly IMapper _mapper;

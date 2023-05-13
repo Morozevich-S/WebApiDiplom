@@ -7,9 +7,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FineController : Controller
+    public class FineController : BaseApiController
     {
         private readonly IFineRepository _fineRepository;
         private readonly IRentalContractRepository _rentalContractRepository;

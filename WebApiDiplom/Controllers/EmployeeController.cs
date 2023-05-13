@@ -9,18 +9,19 @@ using WebApiDiplom.Repository;
 namespace WebApiDiplom.Controllers
 {
     [Authorize(Roles = "Admin,Employee")]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EmployeeController : Controller
+    public class EmployeeController : BaseApiController
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IJobTitleRepository _jobTitleRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeRepository employeeRepository, IJobTitleRepository jobTitleRepository, IMapper mapper)
+        public EmployeeController(IEmployeeRepository employeeRepository, IJobTitleRepository jobTitleRepository,
+                                  IUserRepository userRepository, IMapper mapper)
         {
             _employeeRepository = employeeRepository;
             _jobTitleRepository = jobTitleRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -96,7 +97,7 @@ namespace WebApiDiplom.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateEmployee([FromQuery] int jobTitleId, [FromBody] EmployeeDto employeeCreate)
+        public IActionResult CreateEmployee([FromQuery] int jobTitleId, [FromQuery] int userId, [FromBody] EmployeeDto employeeCreate)
         {
             if (employeeCreate == null)
             {
@@ -104,7 +105,7 @@ namespace WebApiDiplom.Controllers
             }
 
             var employee = _employeeRepository.GetEmployees()
-                .Where(e => e.User.Surname.Trim().ToUpper() == employeeCreate.Surname.Trim().ToUpper())
+                .Where(e => e.Id == employeeCreate.Id)
                 .FirstOrDefault();
 
             if (employee != null)
@@ -121,6 +122,7 @@ namespace WebApiDiplom.Controllers
             var employeeMap = _mapper.Map<Employee>(employeeCreate);
 
             employeeMap.JobTitle = _jobTitleRepository.GetJobTitle(jobTitleId);
+            employeeMap.User = _userRepository.GetUser(userId);
 
             if (!_employeeRepository.CreateEmployee(employeeMap))
             {

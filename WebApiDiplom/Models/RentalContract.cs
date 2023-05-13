@@ -13,5 +13,6 @@
         public Client Client { get; set; }
         public Car Car { get; set; }
         public ICollection<Fine> Fines { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

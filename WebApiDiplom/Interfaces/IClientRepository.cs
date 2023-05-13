@@ -14,5 +14,7 @@ namespace WebApiDiplom.Interfaces
         bool UpdateClient(Client client);
         bool DeleteClient(Client client);
         bool Save();
+        public IEnumerable<Client> GetClientsByRating();
+        public Client UpdateRatingAndFines(Client client);
     }
 }

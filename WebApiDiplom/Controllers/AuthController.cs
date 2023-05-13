@@ -13,9 +13,7 @@ using WebApiDiplom.Services;
 
 namespace WebApiDiplom.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseApiController
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenservice;
@@ -31,15 +29,14 @@ namespace WebApiDiplom.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if (await UserExists(registerDto.Phone))
+            if (await UserExists(registerDto.UserName))
             {
-                return BadRequest("Phone is taken");
+                return BadRequest("Username is taken");
             }
 
             var user = _mapper.Map<AppUser>(registerDto);
 
-            user.Phone = registerDto.Phone;
-            user.UserName = registerDto.Phone.ToString();
+            user.UserName = registerDto.UserName;
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -57,7 +54,7 @@ namespace WebApiDiplom.Controllers
 
             return new UserDto
             {
-                Phone = user.Phone,
+                UserName = user.UserName,
                 Token = await _tokenservice.CreateToken(user)
             };
         }
@@ -65,11 +62,11 @@ namespace WebApiDiplom.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Phone == loginDto.Phone);
+            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.UserName);
 
             if (user == null)
             {
-                return Unauthorized("Invalid phone");
+                return Unauthorized("Invalid username");
             }
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
@@ -81,14 +78,14 @@ namespace WebApiDiplom.Controllers
 
             return new UserDto
             {
-                Phone = user.Phone,
+                UserName = user.UserName,
                 Token = await _tokenservice.CreateToken(user)
             };
         }
 
-        private async Task<bool> UserExists(string phone)
+        private async Task<bool> UserExists(string userName)
         {
-            return await _userManager.Users.AnyAsync(x => x.Phone == phone);
+            return await _userManager.Users.AnyAsync(x => x.UserName == userName);
         }
     }
 }

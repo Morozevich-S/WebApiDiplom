@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
@@ -8,16 +9,16 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ClientController : Controller
+    public class ClientController : BaseApiController
     {
         private readonly IClientRepository _clientRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public ClientController(IClientRepository clientRepository, IMapper mapper)
+        public ClientController(IClientRepository clientRepository, IUserRepository userRepository, IMapper mapper)
         {
             _clientRepository = clientRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -78,7 +79,7 @@ namespace WebApiDiplom.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateClient([FromBody] ClientDto clientCreate)
+        public IActionResult CreateClient([FromQuery] int userId, [FromBody] ClientDto clientCreate)
         {
             if (clientCreate == null)
             {
@@ -86,7 +87,7 @@ namespace WebApiDiplom.Controllers
             }
 
             var client = _clientRepository.GetClients()
-                .Where(c => c.User.Surname.Trim().ToUpper() == clientCreate.User.Surname.Trim().ToUpper())
+                .Where(c => c.Id == clientCreate.Id)
                 .FirstOrDefault();
 
             if (client != null)
@@ -101,6 +102,8 @@ namespace WebApiDiplom.Controllers
             }
 
             var clientMap = _mapper.Map<Client>(clientCreate);
+
+            clientMap.User = _userRepository.GetUser(userId);
 
             if (!_clientRepository.CreateClient(clientMap))
             {
@@ -171,6 +174,19 @@ namespace WebApiDiplom.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpGet("/clientsRating")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Client>))]
+        public IActionResult GetClientsByRating()
+        {
+            var clients = _mapper.Map<List<ClientDto>>(_clientRepository.GetClientsByRating());
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(clients);
         }
     }
 }
