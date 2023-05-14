@@ -154,7 +154,7 @@ namespace WebApiDiplom.Controllers
             return Ok(color);
         }
 
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -194,7 +194,7 @@ namespace WebApiDiplom.Controllers
             return Ok("Successfully created");
         }
 
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("{carId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -232,7 +232,7 @@ namespace WebApiDiplom.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("{carId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

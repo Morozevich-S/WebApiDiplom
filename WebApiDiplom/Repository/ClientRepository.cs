@@ -65,7 +65,7 @@ namespace WebApiDiplom.Repository
             return Save();
         }
 
-        public Client UpdateRatingAndFines(Client client)
+        private Client UpdateRatingAndFines(Client client)
         {
             client.Fines = _context.RentalContracts.Where(r => r.ClientId == client.Id)
                 .Select(r => r.Fines).Count();

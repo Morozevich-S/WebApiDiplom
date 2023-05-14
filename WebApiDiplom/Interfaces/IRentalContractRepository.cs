@@ -11,6 +11,8 @@ namespace WebApiDiplom.Interfaces
         bool CreateRentalContract(int clientId, int carId, RentalContract rentalContract);
         bool UpdadeRentalContract(int clientdId, int carId, RentalContract rentalContract);
         bool DeleteRentalContract(RentalContract rentalContract);
+        public bool StartRentalContract(int clientId, int carId, RentalContract rentalContract);
+        public bool FinishRentalContract(int carMiliageFinish, int dateTimeFinish, RentalContract rentalContract);
         bool Save();
     }
 }

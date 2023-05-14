@@ -18,5 +18,6 @@ namespace WebApiDiplom.Models
         public ICollection<RentalContract> RentalContracts { get; set; }
         public ICollection<ClientBrandCar> ClientBrandCars { get; set; }
         public AppUser User { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

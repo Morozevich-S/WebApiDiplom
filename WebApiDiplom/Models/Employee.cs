@@ -8,5 +8,6 @@
         public ICollection<RentalContract> RentalContracts { get; set; }
         public int UserId { get; set; }
         public AppUser User { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

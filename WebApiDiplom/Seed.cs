@@ -20,8 +20,8 @@ namespace WebApiDiplom
 
                 dataContext.Database.MigrateAsync();
 
-                //if (!dataContext.RentalContracts.Any())
-                //{
+                if (!dataContext.RentalContracts.Any())
+                {
                     var contracts = new List<RentalContract>()
                     {
                         new RentalContract()
@@ -275,7 +275,7 @@ namespace WebApiDiplom
 
                     dataContext.RentalContracts.AddRange(contracts);
                     dataContext.SaveChanges();
-                //}
+                }
             }
         }
         //public static async Task SeedUsers(UserManager<AppUser> userManager,

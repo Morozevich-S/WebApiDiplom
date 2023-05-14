@@ -8,5 +8,6 @@
         public bool Rented { get; set; }
         public int CarModelId { get; set; }
         public int ColorId { get; set; }
+        public decimal Rate { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Data;
+using System.Diagnostics.Contracts;
 using WebApiDiplom.Data;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
@@ -20,12 +21,15 @@ namespace WebApiDiplom.Repository
             var branCarEntity = _context.Cars.Where(c => c.Id == carId)
                                               .Select(cm => cm.CarModel)
                                               .Select(cm => cm.BrandCar).FirstOrDefault();
+            var car = _context.Cars.FirstOrDefault(c => c.Id == carId);
 
             var clientBrandCar = new ClientBrandCar()
             {
                 Client = client,
                 BrandCar = branCarEntity
             };
+
+            rentalContract.Price = rentalContract.RentalDuration * car.Rate;
 
             _context.Add(clientBrandCar);
             _context.Add(rentalContract);
@@ -34,8 +38,8 @@ namespace WebApiDiplom.Repository
 
         public bool DeleteRentalContract(RentalContract rentalContract)
         {
-            //_context.Remove(rentalContract);
-            rentalContract.IsDeleted = true;
+            _context.Remove(rentalContract);
+            //rentalContract.IsDeleted = true;
             return Save();
         }
 
@@ -47,17 +51,17 @@ namespace WebApiDiplom.Repository
 
         public RentalContract GetRentalContract(int id)
         {
-            return _context.RentalContracts.Where(c => c.Id == id && c.IsDeleted == false).FirstOrDefault();
+            return _context.RentalContracts.Where(c => c.Id == id).FirstOrDefault();
         }
 
         public ICollection<RentalContract> GetRentalContracts()
         {
-            return _context.RentalContracts.Where(c => c.IsDeleted == false).OrderBy(c => c.Id).ToList();
+            return _context.RentalContracts.OrderBy(c => c.Id).ToList();
         }
 
         public bool RentalContractExists(int id)
         {
-            return _context.RentalContracts.Where(c => c.IsDeleted == false).Any(c => c.Id == id);
+            return _context.RentalContracts.Any(c => c.Id == id);
         }
 
         public bool Save()
@@ -68,6 +72,37 @@ namespace WebApiDiplom.Repository
 
         public bool UpdadeRentalContract(int clientdId, int carId, RentalContract rentalContract)
         {
+            _context.Update(rentalContract);
+            return Save();
+        }
+        public bool StartRentalContract(int clientId, int carId, RentalContract rentalContract)
+        {
+            CreateRentalContract(clientId, carId, rentalContract);
+
+            var rentCar = _context.Cars.FirstOrDefault(c => c.Id == carId);
+            rentCar.Rented = true;
+
+            return Save();
+        }
+
+        public bool FinishRentalContract(int carMiliageFinish, int dateTimeFinish, RentalContract rentalContract)
+        {
+            var rentCar = _context.Cars.FirstOrDefault(c => c.Id == rentalContract.CarId);
+            rentCar.Rented = false;
+            if (carMiliageFinish > rentCar.Mileage)
+            {
+                rentCar.Mileage = carMiliageFinish;
+            }
+
+            //if (dateTimeFinish > rentalContract.Date)
+            //{
+            //    rentalContract.RentalDuration = (dateTimeFinish - rentalContract.Date).Days;
+            //    rentalContract.Price = rentalContract.RentalDuration * rentCar.Rate;
+            //}
+
+            rentalContract.RentalDuration = dateTimeFinish;
+            rentalContract.Price = rentalContract.RentalDuration * rentCar.Rate;
+
             _context.Update(rentalContract);
             return Save();
         }
