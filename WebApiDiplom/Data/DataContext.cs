@@ -42,8 +42,9 @@ namespace WebApiDiplom.Data
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
 
-            modelBuilder.Entity<ClientBrandCar>()
-                .HasKey(cbc => new { cbc.ClientId, cbc.BrandCarId });
+            //modelBuilder.Entity<ClientBrandCar>()
+            //    .HasKey(cbc => new { cbc.ClientId, cbc.BrandCarId });
+
             modelBuilder.Entity<ClientBrandCar>()
                 .HasOne(c => c.Client)
                 .WithMany(cbc => cbc.ClientBrandCars)

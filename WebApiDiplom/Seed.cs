@@ -202,7 +202,7 @@ namespace WebApiDiplom
                                 },
                                 CarModel = new CarModel()
                                 {
-                                    Name = "SLK280",
+                                    Name = "Z4",
                                     Capacity = 2,
                                     BodyType = new BodyType()
                                     {
@@ -210,7 +210,7 @@ namespace WebApiDiplom
                                     },
                                     BrandCar = new BrandCar()
                                     {
-                                        Name = "Mercedes"
+                                        Name = "BMW"
                                     }
                                 }
                             },

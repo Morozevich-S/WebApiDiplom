@@ -75,8 +75,8 @@ namespace WebApiDiplom.Repository
 
         public CarModel GetCarModelByCar(int id)
         {
-            return _context.Cars.Where(c => c.Id == id).
-                Select(c => c.CarModel).FirstOrDefault();
+            return _context.Cars.Where(c => c.Id == id)
+                    .Select(c => c.CarModel).FirstOrDefault();
         }
 
         public ICollection<Car> GetCars()

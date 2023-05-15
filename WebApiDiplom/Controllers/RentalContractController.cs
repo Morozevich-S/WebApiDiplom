@@ -233,66 +233,18 @@ namespace WebApiDiplom.Controllers
             return Ok("Successfully created");
         }
 
-
-
-        //[HttpPost("/startRentalContract")]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(400)]
-        //public IActionResult StartRentalContract([FromQuery] int carId, [FromQuery] int clientId,
-        //                                         [FromQuery] int employeeId,
-        //                                         [FromBody] RentalContractDto rentalContractCreate)
-        //{
-        //    if (rentalContractCreate == null)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var rentalContract = _rentalContractRepository.GetRentalContracts()
-        //        .Where(r => r.Id == rentalContractCreate.Id)
-        //        .FirstOrDefault();
-
-        //    if (rentalContract != null)
-        //    {
-        //        ModelState.AddModelError("", "Rental contract already exists");
-        //        return StatusCode(422, ModelState);
-        //    }
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var rentalContractMap = _mapper.Map<RentalContract>(rentalContractCreate);
-
-        //    rentalContractMap.Car = _carRepository.GetCar(carId);
-        //    rentalContractMap.Client = _clientRepository.GetClient(clientId);
-        //    rentalContractMap.Employee = _employeeRepository.GetEmployee(employeeId);
-
-        //    if (!_rentalContractRepository.StartRentalContract(clientId, carId, rentalContractMap))
-        //    {
-        //        ModelState.AddModelError("", "Something went wrong while saving");
-        //        return StatusCode(500, ModelState);
-        //    }
-
-        //    return Ok("Successfully created");
-        //}
-
         [HttpPut("/finishRentalContract{finishRentalContractId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public IActionResult FinishRentalContract(int finishRentalContractId,
                                                   [FromQuery] int carMiliageFinish,
-                                                  [FromQuery] int dateTimeFinish,
-                                                  [FromBody] RentalContractDto finishRentalContract)
+                                                  [FromBody] DateTime dateTimeFinish)
+
         {
+            var finishRentalContract = _rentalContractRepository.GetRentalContract(finishRentalContractId);
 
             if (finishRentalContract == null)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (finishRentalContractId != finishRentalContract.Id)
             {
                 return BadRequest(ModelState);
             }
@@ -307,9 +259,7 @@ namespace WebApiDiplom.Controllers
                 return BadRequest();
             }
 
-            var rentalContractMap = _mapper.Map<RentalContract>(finishRentalContract);
-
-            if (!_rentalContractRepository.FinishRentalContract(carMiliageFinish, dateTimeFinish, rentalContractMap))
+            if (!_rentalContractRepository.FinishRentalContract(carMiliageFinish, dateTimeFinish, finishRentalContractId))
             {
                 ModelState.AddModelError("", "Something went wrong updating rental contract");
                 return StatusCode(500, ModelState);

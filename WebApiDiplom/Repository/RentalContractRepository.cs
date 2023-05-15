@@ -85,23 +85,24 @@ namespace WebApiDiplom.Repository
             return Save();
         }
 
-        public bool FinishRentalContract(int carMiliageFinish, int dateTimeFinish, RentalContract rentalContract)
+        public bool FinishRentalContract(int carMiliageFinish, DateTime dateTimeFinish, int rentalContractId)
         {
+            var rentalContract = _context.RentalContracts.FirstOrDefault(rc => rc.Id == rentalContractId);
             var rentCar = _context.Cars.FirstOrDefault(c => c.Id == rentalContract.CarId);
             rentCar.Rented = false;
+
             if (carMiliageFinish > rentCar.Mileage)
             {
                 rentCar.Mileage = carMiliageFinish;
             }
 
-            //if (dateTimeFinish > rentalContract.Date)
-            //{
-            //    rentalContract.RentalDuration = (dateTimeFinish - rentalContract.Date).Days;
-            //    rentalContract.Price = rentalContract.RentalDuration * rentCar.Rate;
-            //}
-
-            rentalContract.RentalDuration = dateTimeFinish;
-            rentalContract.Price = rentalContract.RentalDuration * rentCar.Rate;
+            if (dateTimeFinish > rentalContract.Date)
+            {
+                var duration = new TimeSpan();
+                duration = dateTimeFinish - rentalContract.Date;
+                rentalContract.RentalDuration = duration.Days;
+                rentalContract.Price = duration.Days * rentCar.Rate;
+            }
 
             _context.Update(rentalContract);
             return Save();

@@ -68,7 +68,7 @@ namespace WebApiDiplom.Repository
         private Client UpdateRatingAndFines(Client client)
         {
             client.Fines = _context.RentalContracts.Where(r => r.ClientId == client.Id)
-                .Select(r => r.Fines).Count();
+                .SelectMany(r => r.Fines).Count();
             if (client.Fines == 0)
             {
                 client.Rating = client.DrivingExperience;

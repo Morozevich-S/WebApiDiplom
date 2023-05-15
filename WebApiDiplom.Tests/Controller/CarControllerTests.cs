@@ -44,30 +44,5 @@ namespace WebApiDiplom.Tests.Controller
             result.Should().NotBeNull();
             result.Should().BeOfType(typeof(OkObjectResult));
         }
-
-        //[Fact]
-        //public void BodyTypeController_CreateBodyTypes_ReturnOk()
-        //{
-        //    int carModelId = 1;
-        //    int carColorId = 2;
-        //    var car = A.Fake<Car>();
-        //    var carCreate = A.Fake<CarDto>();
-        //    var cars = A.Fake<ICollection<CarDto>>();
-        //    var carList = A.Fake<List<CarDto>>();
-        //    var carMap = A.Fake<Car>();
-
-        //    carMap.CarModel = _carModelRepository.GetCarModel(carModelId);
-        //    carMap.Color = _colorRepository.GetColor(carColorId);
-        //    A.CallTo(() => _carRepository.GetCars()
-        //                   .Where(c => c.Id == carCreate.Id)
-        //                   .FirstOrDefault()).Returns(car);
-        //    A.CallTo(() => _mapper.Map<Car>(carCreate)).Returns(car);
-        //    A.CallTo(() => _carRepository.CreateCar(carMap)).Returns(true);
-        //    var controller = new CarController(_carRepository, _carModelRepository, _colorRepository, _mapper);
-
-        //    var result = controller.CreateCar(carModelId, carColorId, carCreate);
-
-        //    result.Should().NotBeNull();
-        //}
     }
 }
