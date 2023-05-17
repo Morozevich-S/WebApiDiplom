@@ -12,8 +12,8 @@ using WebApiDiplom.Data;
 namespace WebApiDiplom.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230515134052_update-MODEL")]
-    partial class updateMODEL
+    [Migration("20230517143243_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

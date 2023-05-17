@@ -76,6 +76,7 @@ namespace WebApiDiplom.Controllers
             return Ok(rentalContracts);
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -114,6 +115,7 @@ namespace WebApiDiplom.Controllers
             return Ok("Successfully created");
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("{clientId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -151,6 +153,7 @@ namespace WebApiDiplom.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("{clientId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -176,6 +179,7 @@ namespace WebApiDiplom.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("/clientsRating")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Client>))]
         public IActionResult GetClientsByRating()

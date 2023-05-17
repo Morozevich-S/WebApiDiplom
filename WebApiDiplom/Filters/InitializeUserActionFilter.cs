@@ -28,8 +28,8 @@ namespace WebApiDiplom.Filters
 
             var userId = int.Parse(context.HttpContext.User.FindFirst(JwtRegisteredClaimNames.NameId)?.Value);
 
-            var client = await _context.Clients.FirstOrDefaultAsync(c => c.UserId == userId);
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.UserId == userId);
+            var client = await _context.Clients.FirstOrDefaultAsync(c => c.User.Id == userId);
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.User.Id == userId);
 
             controller.CurrentClient = client;
             controller.CurrentEmployee = employee;

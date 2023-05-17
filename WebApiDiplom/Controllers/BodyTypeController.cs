@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
@@ -81,6 +83,7 @@ namespace WebApiDiplom.Controllers
             return Ok(carModels);
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -117,6 +120,7 @@ namespace WebApiDiplom.Controllers
             return Ok("Successfully created");
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPut("{bodyTypeId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -154,6 +158,7 @@ namespace WebApiDiplom.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [HttpDelete("{bodyTypeId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

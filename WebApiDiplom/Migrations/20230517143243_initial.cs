@@ -34,6 +34,7 @@ namespace WebApiDiplom.Migrations
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Passport = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -220,9 +221,10 @@ namespace WebApiDiplom.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DrivingExperience = table.Column<int>(type: "int", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<double>(type: "float", nullable: false),
                     Fines = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -270,7 +272,8 @@ namespace WebApiDiplom.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     JobTitleId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -293,12 +296,14 @@ namespace WebApiDiplom.Migrations
                 name: "ClientBrandCars",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ClientId = table.Column<int>(type: "int", nullable: false),
                     BrandCarId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClientBrandCars", x => new { x.ClientId, x.BrandCarId });
+                    table.PrimaryKey("PK_ClientBrandCars", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ClientBrandCars_BrandCars_BrandCarId",
                         column: x => x.BrandCarId,
@@ -324,7 +329,8 @@ namespace WebApiDiplom.Migrations
                     Rented = table.Column<bool>(type: "bit", nullable: false),
                     CarModelId = table.Column<int>(type: "int", nullable: false),
                     ColorId = table.Column<int>(type: "int", nullable: false),
-                    Rate = table.Column<decimal>(type: "decimal(6,2)", precision: 6, scale: 2, nullable: false)
+                    Rate = table.Column<decimal>(type: "decimal(6,2)", precision: 6, scale: 2, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -354,7 +360,8 @@ namespace WebApiDiplom.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RentalDuration = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(6,2)", precision: 6, scale: 2, nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -462,6 +469,11 @@ namespace WebApiDiplom.Migrations
                 name: "IX_ClientBrandCars_BrandCarId",
                 table: "ClientBrandCars",
                 column: "BrandCarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClientBrandCars_ClientId",
+                table: "ClientBrandCars",
+                column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_UserId",

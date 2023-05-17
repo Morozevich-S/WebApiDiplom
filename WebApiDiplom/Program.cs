@@ -46,7 +46,6 @@ namespace WebApiDiplom
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            //builder.Services.AddSwaggerGen();
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -93,7 +92,7 @@ namespace WebApiDiplom
 
             var app = builder.Build();
 
-            app.Services.SeedDataContext();
+            await app.Services.SeedDataContext();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -110,20 +109,20 @@ namespace WebApiDiplom
             app.MapControllers();
 
             using var scope = app.Services.CreateScope();
-            //var services = scope.ServiceProvider;
-            //try
-            //{
-            //    var context = services.GetRequiredService<DataContext>();
-            //    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-            //    var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
-            //    await context.Database.MigrateAsync();
-            //    await Seed.SeedUsers(userManager, roleManager);
-            //}
-            //catch (Exception ex)
-            //{
-            //    var logger = services.GetRequiredService<ILogger<Program>>();
-            //    logger.LogError(ex, "An error occurred during migration");
-            //}
+            var services = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<DataContext>();
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+                await context.Database.MigrateAsync();
+                await Seed.SeedUsers(userManager, roleManager);
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred during migration");
+            }
             await app.RunAsync(); 
         }
     }

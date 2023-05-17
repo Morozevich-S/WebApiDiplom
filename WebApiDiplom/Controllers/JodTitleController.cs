@@ -8,7 +8,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    [Authorize(Roles = "Admin,Employee")]
+    [Authorize(Roles = "Admin")]
     public class JodTitleController : BaseApiController
     {
         private readonly IJobTitleRepository _jobTitleRepository;

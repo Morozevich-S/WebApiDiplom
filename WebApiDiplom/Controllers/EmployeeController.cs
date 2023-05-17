@@ -58,6 +58,21 @@ namespace WebApiDiplom.Controllers
             return Ok(employee);
         }
 
+        [HttpGet("/currentEmployee")]
+        [ProducesResponseType(200, Type = typeof(Employee))]
+        [ProducesResponseType(400)]
+        public IActionResult GetCurrentEmployee()
+        {
+            var employee = _mapper.Map<EmployeeDto>(CurrentEmployee);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(employee);
+        }
+
         [HttpGet("/api/RentalContract/{contractId}/employee")]
         [ProducesResponseType(200, Type = typeof(Employee))]
         [ProducesResponseType(400)]

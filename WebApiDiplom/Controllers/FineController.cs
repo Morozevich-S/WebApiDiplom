@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using WebApiDiplom.Dto;
 using WebApiDiplom.Interfaces;
 using WebApiDiplom.Models;
@@ -7,6 +9,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
+    [Authorize(Roles = "Admin,Employee")]
     public class FineController : BaseApiController
     {
         private readonly IFineRepository _fineRepository;

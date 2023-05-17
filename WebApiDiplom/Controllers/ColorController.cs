@@ -8,6 +8,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
+    [Authorize(Roles = "Admin,Employee")]
     public class ColorController : BaseApiController
     {
         private readonly IColorRepository _colorRepository;

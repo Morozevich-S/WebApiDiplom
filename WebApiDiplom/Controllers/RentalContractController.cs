@@ -8,7 +8,7 @@ using WebApiDiplom.Repository;
 
 namespace WebApiDiplom.Controllers
 {
-    //[Authorize(Roles = "Admin,Employee")]
+    [Authorize(Roles = "Admin,Employee")]
     public class RentalContractController : BaseApiController
     {
         private readonly ICarRepository _carRepository;
